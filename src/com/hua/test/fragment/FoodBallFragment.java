@@ -143,7 +143,7 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
             public void onClick(View v) {
                 currentPagte++;
                 index = index + 20;
-                LogUtils2.i("onButtomListener  the index is "+index  +"  cacheName = "+cacheName);
+//                LogUtils2.i("onButtomListener  the index is "+index  +"  cacheName = "+cacheName);
                 loadData(getCommonUrl(index + "", Url.FootId),cacheName);
             }
         });
@@ -154,7 +154,7 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				LogUtils2.i("******onScrollStateChanged**********");
+//				LogUtils2.i("******onScrollStateChanged**********");
 				
 //				 LinearLayout layout = MainActivityPhone.getTab_Bar_Container();
 				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
@@ -187,7 +187,7 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
     
 	/**加载数据*/
 	public void loadData(String url,String cacheFragmentName){
-		LogUtils2.e("commentUrl = "+this.getClass().getSimpleName() +" cacheName = "+cacheName);
+//		LogUtils2.e("commentUrl = "+this.getClass().getSimpleName() +" cacheName = "+cacheName);
         if (getMyActivity().hasNetWork()) {
             loadNewList(url);
         } else {
@@ -246,7 +246,6 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 			mDemoSlider.setCustomAnimation(new DescriptionAnimation());
 			LogUtils2.i("*****mViewFlowAdapter.setAdapterData********");
 			// mViewFlowAdapter.setAdapterData(newHashMap, url_maps);
-			LogUtils2.e("");
 			foodBallAdapter.appendList(newModles,index);
 		}
 	
@@ -294,7 +293,7 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 					e.printStackTrace();
 					LogUtils2.e("GetDataTask get Data error ----");
 				}
-				LogUtils2.i("get data from network result == " + result);
+//				LogUtils2.i("get data from network result == " + result);
 				return result;
 			}
 

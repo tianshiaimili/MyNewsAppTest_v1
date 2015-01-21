@@ -57,6 +57,13 @@ public class VideoPlayActivity extends SwipeBackActivity implements
 			finish();
 		}
 		uri = Uri.parse(playUrl);
+		
+		mVideoView = (VideoView) findViewById(R.id.buffer);
+		mProgressBar = (ProgressBar) findViewById(R.id.probar);
+		mLoadRate = (TextView) findViewById(R.id.load_rate);
+		mVideoEnd = (ImageView) findViewById(R.id.video_end);
+		
+		
 		mVideoView.setVideoURI(uri);
 		mVideoView.setMediaController(new MediaController(this));
 		mVideoView.requestFocus();
@@ -104,8 +111,10 @@ public class VideoPlayActivity extends SwipeBackActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		
+//		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setContentView(R.layout.activity_play_videobuffer);
+		init() ;
+		initView();
 		
 	}
 

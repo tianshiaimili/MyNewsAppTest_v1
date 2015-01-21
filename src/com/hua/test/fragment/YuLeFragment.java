@@ -295,7 +295,7 @@ public class YuLeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 					e.printStackTrace();
 					LogUtils2.e("GetDataTask get Data error ----");
 				}
-				LogUtils2.i("get data from network result == " + result);
+//				LogUtils2.i("get data from network result == " + result);
 				return result;
 			}
 

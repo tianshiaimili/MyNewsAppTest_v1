@@ -343,6 +343,7 @@ public class VideoActivity extends SwipeBackActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		LogUtils2.w("***VideoActivity.onCreate*** == "+this.getClass().getSimpleName());
 		setContentView(R.layout.activity_picture);
 		// initFragments();
 		initContentView();
@@ -374,4 +375,17 @@ public class VideoActivity extends SwipeBackActivity {
 		// newAdapter.getLists().clear();
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		LogUtils2.w("*****VideoActivity.**onSaveInstanceState**************");
+		
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		LogUtils2.w("*****VideoActivity.**onRestoreInstanceState**************");
+	}
+	
 }

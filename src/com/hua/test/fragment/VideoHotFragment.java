@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,10 +19,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
 
+import com.hua.test.activity.BaseActivity;
 import com.hua.test.activity.R;
+import com.hua.test.activity.VideoPlayActivity;
 import com.hua.test.adapter.CardsAnimationAdapter;
 import com.hua.test.adapter.VideoAdapter;
-import com.hua.test.bean.NewModle;
 import com.hua.test.bean.VideoModle;
 import com.hua.test.contants.Url;
 import com.hua.test.initView.InitView;
@@ -54,7 +56,7 @@ public class VideoHotFragment extends BaseFragment implements
 	private int index = 0;
 	private boolean isRefresh = false;
 	private static final int RESPONSE_OK = 0;
-	private String cacheName =this.getClass().getSimpleName();
+	private String cacheName ="VideoHotFragment";
 
 	
     
@@ -144,8 +146,8 @@ public class VideoHotFragment extends BaseFragment implements
 		Bundle bundle = new Bundle();
 		bundle.putString("playUrl", videoModle.getMp4Hd_url());
 		bundle.putString("filename", videoModle.getTitle());
-		// ((BaseActivity) getActivity()).openActivity(VideoPlayActivity_.class,
-		// bundle, 0);
+		 ((BaseActivity) getActivity()).openActivity(VideoPlayActivity.class,
+		 bundle, 0);
 	}
 
 	// @Background
@@ -201,7 +203,7 @@ public class VideoHotFragment extends BaseFragment implements
 				e.printStackTrace();
 				LogUtils2.e("GetDataTask get Data error ----");
 			}
-			LogUtils2.i("get data from network result == " + result);
+//			LogUtils2.i("get data from network result == " + result);
 			return result;
 		}
 

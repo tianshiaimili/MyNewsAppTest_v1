@@ -159,7 +159,7 @@ OnSliderClickListener{
             public void onClick(View v) {
                 currentPagte++;
                 index = index + 20;
-                LogUtils2.i("cacheFragmentName onButtomListener  the index is "+index+"   name == "+cacheName);
+//                LogUtils2.i("cacheFragmentName onButtomListener  the index is "+index+"   name == "+cacheName);
                 loadData(getNewUrl(index + ""),cacheName);
             }
         });
@@ -172,12 +172,12 @@ OnSliderClickListener{
 			
 			@Override  
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				LogUtils2.i("******onScrollStateChanged**********");
-				LogUtils2.i("what is the scrollY distance == "+view.getScrollY());
+//				LogUtils2.i("******onScrollStateChanged**********");
+//				LogUtils2.i("what is the scrollY distance == "+view.getScrollY());
 				 
 				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
-					LogUtils2.e("the first posiont == "+mSwipeListView.getFirstVisiblePosition());
-					LogUtils2.e("the last posiont == "+mSwipeListView.getLastVisiblePosition());
+//					LogUtils2.e("the first posiont == "+mSwipeListView.getFirstVisiblePosition());
+//					LogUtils2.e("the last posiont == "+mSwipeListView.getLastVisiblePosition());
 //					mSwipeListView.get
 				}
 				
@@ -348,7 +348,7 @@ OnSliderClickListener{
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			LogUtils2.e("GetDataTask onPreExecute ----");
+//			LogUtils2.e("GetDataTask onPreExecute ----");
 		}
 		// 后台处理部分
 		@Override
@@ -361,7 +361,7 @@ OnSliderClickListener{
 				e.printStackTrace();
 				LogUtils2.e("GetDataTask get Data error ----");
 			}
-			LogUtils2.i("get data from network result == " + result);
+//			LogUtils2.i("get data from network result == " + result);
 			return result;
 		}
 
@@ -402,13 +402,13 @@ OnSliderClickListener{
         	LogUtils2.i("is first come in************");
             initSliderLayout(list);
         } else {
-        	LogUtils2.d("add data to the listView and the list.size = "+ list.size());
+//        	LogUtils2.d("add data to the listView and the list.size = "+ list.size());
         	newAdapter.appendList(list,index);
         }
         if(newAdapter.isNeedUplistsModlesData(index)){
         	listsModles.addAll(list);
         }
-        LogUtils2.d(" the value of listsModles.size  = "+listsModles.size());
+//        LogUtils2.d(" the value of listsModles.size  = "+listsModles.size());
         mSwipeListView.onBottomComplete();//TODO
     }
     

@@ -31,6 +31,11 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.umeng.analytics.MobclickAgent;
 
+/**
+ * 新闻的头条的详细activity
+ * @author zero
+ *
+ */
 //@EActivity(R.layout.activity_details)
 public class DetailsActivity extends SwipeBackActivity implements
 		ImageLoadingListener, ImageLoadingProgressListener {

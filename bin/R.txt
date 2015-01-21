@@ -933,6 +933,7 @@ int style Default 0x7f08002d
 int style Default_NoTitleBar 0x7f080031
 int style Default_SwipeBack 0x7f080032
 int style Default_SwipeBack_NoTitleBar 0x7f080033
+int style Default_SwipeBack_NoTitleBar_Fullscreen 0x7f080034
 int style ListViewStyle 0x7f08000e
 int style MediaController_SeekBar 0x7f080002
 int style MediaController_Text 0x7f080003

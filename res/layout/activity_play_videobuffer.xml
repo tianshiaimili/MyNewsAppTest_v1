@@ -5,6 +5,13 @@
     android:background="@android:color/black"
     android:orientation="vertical" >
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="#000000"
+         />
+
     <io.vov.vitamio.widget.VideoView
         android:id="@+id/buffer"
         android:layout_width="match_parent"
@@ -35,6 +42,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:padding="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/video_title"
+        android:padding="5dp"
+        android:text="啦啦啦德玛西亚"
+        android:textColor="#03A9F4" />
 
     <ImageView
         android:id="@+id/video_end"
