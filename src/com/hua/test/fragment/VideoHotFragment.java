@@ -164,25 +164,28 @@ public class VideoHotFragment extends BaseFragment implements
 
 	// @UiThread
 	public void getResult(String result) {
-		getMyActivity().setCacheStr(cacheName + currentPagte,
-				result);
-		if (isRefresh) {
-			isRefresh = false;
-			videoAdapter.clear();
-			listsModles.clear();
+		if(result != null){
+			
+			getMyActivity().setCacheStr(cacheName + currentPagte,
+					result);
+			if (isRefresh) {
+				isRefresh = false;
+				videoAdapter.clear();
+				listsModles.clear();
+			}
+			mProgressBar.setVisibility(View.GONE);
+			swipeLayout.setRefreshing(false);
+			
+			List<VideoModle> list = ViedoListJson.instance(getActivity())
+					.readJsonVideoModles(result, Url.VideoReDianId);
+			
+			videoAdapter.appendList(list,index);
+			
+			if(videoAdapter.isNeedUplistsModlesData(index)){
+				listsModles.addAll(list);
+			}
+			mSwipeListView.onBottomComplete();
 		}
-		mProgressBar.setVisibility(View.GONE);
-		swipeLayout.setRefreshing(false);
-
-		List<VideoModle> list = ViedoListJson.instance(getActivity())
-				.readJsonVideoModles(result, Url.VideoReDianId);
-		
-		videoAdapter.appendList(list,index);
-		
-		if(videoAdapter.isNeedUplistsModlesData(index)){
-			listsModles.addAll(list);
-		}
-		mSwipeListView.onBottomComplete();
 	}
 
     private class GetDataTask extends AsyncTask<String, Void, String> {

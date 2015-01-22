@@ -76,7 +76,7 @@ public class YuLeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private boolean isRefresh = false;
     private static final int RESPONSE_OK = 0;
 
-    private String cacheName =this.getClass().getSimpleName();
+    private String cacheName ="YuLeFragment";//this.getClass().getSimpleName();
     
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message message) {
@@ -188,7 +188,7 @@ public class YuLeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     
 	/**加载数据*/
 	public void loadData(String url,String cacheFragmentName){
-		LogUtils2.e("commentUrl = "+this.getClass().getSimpleName()+"   cacheName ="+cacheName);
+//		LogUtils2.e("commentUrl = "+this.getClass().getSimpleName()+"   cacheName ="+cacheName);
         if (getMyActivity().hasNetWork()) {
             loadNewList(url);
         } else {
@@ -253,28 +253,31 @@ public class YuLeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	
 //	    @UiThread
 	    public void getResult(String result) {
-	        getMyActivity().setCacheStr(this.getClass().getSimpleName()+ currentPagte, result);
-	        if (isRefresh) {
-	            isRefresh = false;
-	            yuLeAdapter.clear();
-	            listsModles.clear();
-	        }
-	        mProgressBar.setVisibility(View.GONE);
-	        swipeLayout.setRefreshing(false);
-	        List<NewModle> list = NewListJson.instance(getActivity()).readJsonNewModles(result,
-	                Url.YuLeId);
-	        if (index == 0) {
+	    	if(result != null){
+	    		
+	    		getMyActivity().setCacheStr(cacheName+ currentPagte, result);
+	    		if (isRefresh) {
+	    			isRefresh = false;
+	    			yuLeAdapter.clear();
+	    			listsModles.clear();
+	    		}
+	    		mProgressBar.setVisibility(View.GONE);
+	    		swipeLayout.setRefreshing(false);
+	    		List<NewModle> list = NewListJson.instance(getActivity()).readJsonNewModles(result,
+	    				Url.YuLeId);
+	    		if (index == 0) {
 //	        	LogUtils2.i("is first come in************");
-	            initSliderLayout(list);
-	        } else {
+	    			initSliderLayout(list);
+	    		} else {
 //	        	LogUtils2.i("add data to the listView************");
-	        	yuLeAdapter.appendList(list,index);
-	        }
-	        
-	        if(yuLeAdapter.isNeedUplistsModlesData(index)){
-	        	listsModles.addAll(list);
-	        }
-	        mSwipeListView.onBottomComplete();
+	    			yuLeAdapter.appendList(list,index);
+	    		}
+	    		
+	    		if(yuLeAdapter.isNeedUplistsModlesData(index)){
+	    			listsModles.addAll(list);
+	    		}
+	    		mSwipeListView.onBottomComplete();
+	    	}
 	    }
 		
 	    private class GetDataTask extends AsyncTask<String, Void, String> {

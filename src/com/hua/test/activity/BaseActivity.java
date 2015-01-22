@@ -108,6 +108,12 @@ public class BaseActivity extends FragmentActivity {
 		return ACache.get(this).getAsString(key);
 	}
 
+
+    public void openActivityForResult(Class<?> pClass, int requestCode) {
+        openActivity(pClass, null, requestCode);
+    }
+	
+	
 	/**
 	 * 更具类打开acitvity,并携带参数
 	 */

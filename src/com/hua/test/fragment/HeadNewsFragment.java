@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -99,7 +100,7 @@ OnSliderClickListener{
     private boolean isUpAnimationOver;
 	private TranslateAnimation anim;
 	
-	private String cacheName =this.getClass().getSimpleName();
+	private String cacheName ="HeadNewsFragment";//this.getClass().getSimpleName();
     
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message message) {
@@ -152,7 +153,7 @@ OnSliderClickListener{
         animationAdapter.setAbsListView(mSwipeListView);
         mSwipeListView.setAdapter(animationAdapter);
         LogUtils2.d("what is the value of index  = "+index);
-        loadData(getNewUrl(index + ""),this.getClass().getSimpleName());
+        loadData(getNewUrl(index + ""),cacheName);
 
         mSwipeListView.setOnBottomListener(new OnClickListener() {
             @Override
@@ -387,29 +388,32 @@ OnSliderClickListener{
 
 //    @UiThread
     public void getResult(String result) {
-        getMyActivity().setCacheStr("HeadNewsFragment" + currentPagte, result);
-        if (isRefresh) {
-            isRefresh = false;
-            newAdapter.clear();
-            listsModles.clear();
-        }
-        mProgressBar.setVisibility(View.GONE);
-        swipeLayout.setRefreshing(false);
-        List<NewModle> list =
-                NewListJson.instance(getActivity()).readJsonNewModles(result,
-                        Url.TopId);
-        if (index == 0) {
-        	LogUtils2.i("is first come in************");
-            initSliderLayout(list);
-        } else {
+    	if(result != null){
+    		
+    		getMyActivity().setCacheStr("HeadNewsFragment" + currentPagte, result);
+    		if (isRefresh) {
+    			isRefresh = false;
+    			newAdapter.clear();
+    			listsModles.clear();
+    		}
+    		mProgressBar.setVisibility(View.GONE);
+    		swipeLayout.setRefreshing(false);
+    		List<NewModle> list =
+    				NewListJson.instance(getActivity()).readJsonNewModles(result,
+    						Url.TopId);
+    		if (index == 0) {
+    			LogUtils2.i("is first come in************");
+    			initSliderLayout(list);
+    		} else {
 //        	LogUtils2.d("add data to the listView and the list.size = "+ list.size());
-        	newAdapter.appendList(list,index);
-        }
-        if(newAdapter.isNeedUplistsModlesData(index)){
-        	listsModles.addAll(list);
-        }
+    			newAdapter.appendList(list,index);
+    		}
+    		if(newAdapter.isNeedUplistsModlesData(index)){
+    			listsModles.addAll(list);
+    		}
 //        LogUtils2.d(" the value of listsModles.size  = "+listsModles.size());
-        mSwipeListView.onBottomComplete();//TODO
+    		mSwipeListView.onBottomComplete();//TODO
+    	}
     }
     
     
@@ -473,7 +477,7 @@ OnSliderClickListener{
 				isRefresh = true;
 //				loadData(getCommonUrl(0 + "", Url.DianYingId));
 				index = 0;
-				loadData(getNewUrl(index + ""),this.getClass().getSimpleName());
+				loadData(getNewUrl(index + ""),cacheName);
 				url_maps.clear();
 				mDemoSlider.removeAllSliders();
 			}
@@ -546,6 +550,13 @@ OnSliderClickListener{
     }
     
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	LogUtils2.w("**HeadNewsFragment.*onActivityResult***");
+    	
+    }
+    
 
 	/**
 	 * this is for the SwipeListView Listener

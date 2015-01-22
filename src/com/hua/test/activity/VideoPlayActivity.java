@@ -23,7 +23,7 @@ import com.umeng.analytics.MobclickAgent;
 //})
 //@Fullscreen
 //@EActivity(R.layout.activity_play_videobuffer)
-public class VideoPlayActivity extends SwipeBackActivity implements
+public class VideoPlayActivity extends BaseActivity implements
 		OnInfoListener, OnBufferingUpdateListener, OnPreparedListener {
 
 	// @ViewById(R.id.buffer)

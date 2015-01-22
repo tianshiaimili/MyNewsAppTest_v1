@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,7 +75,7 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
     private int index = 0;
     private boolean isRefresh = false;
     private static final int RESPONSE_OK = 0;
-    private String cacheName =this.getClass().getSimpleName();
+    private String cacheName ="FoodBallFragment";//this.getClass().getSimpleName();
 
     
 	Handler mHandler = new Handler() {
@@ -251,28 +252,31 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 	
 //	    @UiThread
 	    public void getResult(String result) {
-	        getMyActivity().setCacheStr(this.getClass().getSimpleName() + currentPagte, result);
-	        if (isRefresh) {
-	            isRefresh = false;
-	            foodBallAdapter.clear();
-	            listsModles.clear();
-	        }
-	        mProgressBar.setVisibility(View.GONE);
-	        swipeLayout.setRefreshing(false);
-	        List<NewModle> list = NewListJson.instance(getActivity()).readJsonNewModles(result,
-	                Url.FootId);
-	        if (index == 0) {
-	        	LogUtils2.i("is first come in************");
-	            initSliderLayout(list);
-	        } else {
-	        	LogUtils2.i("add data to the listView************");
-	        	foodBallAdapter.appendList(list,index);
-	        }
-	        
-	        if(foodBallAdapter.isNeedUplistsModlesData(index)){
-	        	listsModles.addAll(list);
-	        }
-	        mSwipeListView.onBottomComplete();
+	    	if(result != null){
+	    		
+	    		getMyActivity().setCacheStr(cacheName + currentPagte, result);
+	    		if (isRefresh) {
+	    			isRefresh = false;
+	    			foodBallAdapter.clear();
+	    			listsModles.clear();
+	    		}
+	    		mProgressBar.setVisibility(View.GONE);
+	    		swipeLayout.setRefreshing(false);
+	    		List<NewModle> list = NewListJson.instance(getActivity()).readJsonNewModles(result,
+	    				Url.FootId);
+	    		if (index == 0) {
+	    			LogUtils2.i("is first come in************");
+	    			initSliderLayout(list);
+	    		} else {
+	    			LogUtils2.i("add data to the listView************");
+	    			foodBallAdapter.appendList(list,index);
+	    		}
+	    		
+	    		if(foodBallAdapter.isNeedUplistsModlesData(index)){
+	    			listsModles.addAll(list);
+	    		}
+	    		mSwipeListView.onBottomComplete();
+	    	}
 	    }
 		
 	    private class GetDataTask extends AsyncTask<String, Void, String> {
@@ -414,6 +418,17 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
     	LogUtils2.w("***onDestroy***");
 //    	foodBallAdapter.getLists().clear();
     }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	LogUtils2.w("**FoodBallFragment.*onActivityResult***");
+    	
+    }
+    
+    
+    
+    //////////////////////
     
 	class MyFoodBallListViewItemListener implements OnItemClickListener{
 

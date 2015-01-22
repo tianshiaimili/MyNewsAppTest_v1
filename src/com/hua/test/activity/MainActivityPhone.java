@@ -3,6 +3,7 @@ package com.hua.test.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hua.tes.slidingmenu.BaseSlidingFragmentActivity;
 import com.hua.tes.slidingmenu.SlidingMenu;
@@ -99,10 +98,12 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
     protected ImageView top_more;
     /** 用户选择的新闻分类列表 即在水平Bar上的内容item */
     private ArrayList<ChannelItem> userChannelList;
-    /** 请求CODE */
+    /** 请求CODE 添加更多频道item */
     public final static int CHANNELR_EQUEST = 1;
     /** 调整返回的RESULTCODE */
-    public final static int CHANNEL_RESULT = 10;
+    public final static int CHANNEL_RESULT = 200;
+    /**判断是否改变了频道的item 个数 或者顺序*/
+    private boolean isChange_Channel;
     /** 当前选中的栏目 */
     private int columnSelectIndex = 0;
     /**用来封装多个Fragment 如 今日头条 体育 科技等fragment*/
@@ -130,7 +131,8 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 	private boolean isEnd;
 
 	private int bottom_indicate_line_duration =150;
-
+	
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,13 +151,51 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
     public void onResume() {
     	super.onResume();
     	 MobclickAgent.onResume(this);
+    	 LogUtils2.w("*********onResume********");
+    	 if(isChange_Channel){
+    		 LogUtils2.i("*********onResume.isChange_Channel********");
+    		 isChange_Channel = false;
+    		 setChangelView();
+    		 
+    	 }
+    	 
     }
 
     @Override
     public void onPause() {
     	super.onPause();
     	  MobclickAgent.onPause(this);
+    	  LogUtils2.w("*********onPause********");
     }
+    
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	LogUtils2.d("the other activity return result...........");
+    	LogUtils2.d("requestCode ==="+requestCode);
+    	LogUtils2.d("resultCode ==="+resultCode);
+    	int mRequestCode = requestCode;
+    	switch (mRequestCode) {
+		case CHANNELR_EQUEST:
+			
+			if(resultCode == CHANNEL_RESULT){
+				LogUtils2.i("-----change channel-----");
+				/**
+				 * 当在ChannelActivity 返回时，加入顺序或者个数发生改变，那么放回MainactivityPhone时
+				 * 会先执行这里，然后再是onstart - onresume - ..方法
+				 */
+				isChange_Channel = true;
+			}
+			
+			break;
+
+		default:
+			break;
+		}
+    	
+    }
+    
     
     @Override
     public void onDestroy() {
@@ -194,6 +234,8 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 		mViewPager = (ViewPager) findViewById(R.id.mViewPager);
 		mRadioGroup_content = (LinearLayout) findViewById(R.id.mRadioGroup_content);
 		add_more_columns = (LinearLayout) findViewById(R.id.add_more_columns);
+		add_more_columns.setOnClickListener(new MyOnClickListener());
+		
 		button_more_columns = (ImageView) findViewById(R.id.button_more_columns);
 		rl_column = (RelativeLayout) findViewById(R.id.rl_column);
 		shade_left = (ImageView) findViewById(R.id.shade_left);
@@ -457,7 +499,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
     private void initFragment() {
         fragments.clear();
         int count = userChannelList.size();
-        count = 10;
+//        count = 10;
         for (int i = 0; i < count; i++) {
             // Bundle data = new Bundle();
             String nameString = userChannelList.get(i).getName();
@@ -496,52 +538,75 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
             newfragment = new TestFragment();
         } 
         
-//        else if (channelName.equals("北京")) {
-//            newfragment = new BeiJingFragment_();
-//        } else if (channelName.equals("军事")) {
-//            newfragment = new JunShiFragment_();
-//        } else if (channelName.equals("房产")) {
-//            newfragment = new FangChanFragment_();
-//        } else if (channelName.equals("游戏")) {
-//            newfragment = new YouXiFragment_();
-//        } else if (channelName.equals("情感")) {
-//            newfragment = new QinGanFragment_();
-//        } else if (channelName.equals("精选")) {
-//            newfragment = new JingXuanFragment_();
-//        } else if (channelName.equals("电台")) {
-//            newfragment = new DianTaiFragment_();
-//        } else if (channelName.equals("图片")) {
-//            newfragment = new TuPianFragment_();
-//        } else if (channelName.equals("NBA")) {
-//            newfragment = new NBAFragment_();
-//        } else if (channelName.equals("数码")) {
-//            newfragment = new ShuMaFragment_();
-//        } else if (channelName.equals("移动")) {
-//            newfragment = new YiDongFragment_();
-//        } else if (channelName.equals("彩票")) {
-//            newfragment = new CaiPiaoFragment_();
-//        } else if (channelName.equals("教育")) {
-//            newfragment = new JiaoYuFragment_();
-//        } else if (channelName.equals("论坛")) {
-//            newfragment = new LunTanFragment_();
-//        } else if (channelName.equals("旅游")) {
-//            newfragment = new LvYouFragment_();
-//        } else if (channelName.equals("手机")) {
-//            newfragment = new ShouJiFragment_();
-//        } else if (channelName.equals("博客")) {
-//            newfragment = new BoKeFragment_();
-//        } else if (channelName.equals("社会")) {
-//            newfragment = new SheHuiFragment_();
-//        } else if (channelName.equals("家居")) {
-//            newfragment = new JiaJuFragment_();
-//        } else if (channelName.equals("暴雪")) {
-//            newfragment = new BaoXueYouXiFragment_();
-//        } else if (channelName.equals("亲子")) {
-//            newfragment = new QinZiFragment_();
-//        } else if (channelName.equals("CBA")) {
-//            newfragment = new CBAFragment_();
-//        }
+        else if (channelName.equals("北京")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("军事")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("房产")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("游戏")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("情感")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("精选")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("电台")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("图片")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("NBA")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("数码")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("移动")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("彩票")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("教育")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("论坛")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("旅游")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("手机")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("博客")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("社会")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("家居")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("暴雪")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("亲子")) {
+            newfragment = new TestFragment();
+        } else if (channelName.equals("CBA")) {
+            newfragment = new TestFragment();
+        }
         return newfragment;
+    }
+    
+    //打开店家频道的activity
+    class MyOnClickListener implements OnClickListener{
+
+		@Override
+		public void onClick(View v) {
+			
+			 int ID = v.getId();
+			 
+			 switch (ID) {
+			case R.id.add_more_columns:
+				
+				MainActivityPhone.this.openActivityForResult(ChannelActivity.class, CHANNELR_EQUEST);
+				
+				break;
+
+			default:
+				break;
+			}
+			
+		}
+    	
     }
     
 }

@@ -41,10 +41,11 @@
         </activity>
         <activity android:name="com.hua.test.activity.WelcomeActivity" >
         </activity>
-        
+
         <!-- 新闻的activity -->
         <activity
             android:name="com.hua.test.activity.MainActivityPhone"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:theme="@style/Default.NoTitleBar" >
         </activity>
         <activity
@@ -74,13 +75,13 @@
             android:launchMode="singleTop"
             android:theme="@style/Default.SwipeBack.NoTitleBar" >
         </activity>
-        
-        
+
         <!-- 图片的activity -->
-        
+
         <activity
             android:name="com.hua.test.activity.PictureSinaActivity"
             android:alwaysRetainTaskState="true"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:theme="@style/Default.SwipeBack.NoTitleBar" >
         </activity>
         <activity
@@ -92,18 +93,14 @@
             android:launchMode="singleTop"
             android:theme="@style/Default.SwipeBack.NoTitleBar" >
         </activity>
-        
-        
-        
-        
+
         <!-- 视频的activity -->
-        
+
         <activity
             android:name="com.hua.test.activity.VideoActivity"
             android:alwaysRetainTaskState="true"
             android:theme="@style/Default.SwipeBack.NoTitleBar" >
         </activity>
-        
         <activity
             android:name="io.vov.vitamio.activity.InitActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
@@ -114,9 +111,20 @@
         <activity
             android:name="com.hua.test.activity.VideoPlayActivity"
             android:alwaysRetainTaskState="true"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="landscape"
-            android:theme="@style/Default.SwipeBack.NoTitleBar.Fullscreen" >
+            android:theme="@style/VideoPlayActivity_Style" >
+        </activity>
+
+        <!-- 添加频道的activity -->
+        <activity
+            android:name=".ChannelActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Default.SwipeBack.NoTitleBar" >
         </activity>
     </application>
 

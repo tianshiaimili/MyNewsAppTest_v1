@@ -80,22 +80,26 @@ SwipeRefreshLayout.OnRefreshListener{
     
 
     public void getResult(String result) {
-        getMyActivity().setCacheStr("TuPianSinaMeiTuFragment" + currentPagte, result);
-        if (isRefresh) {
-            isRefresh = false;
-            mPicuterAdapter.clear();
-            listsModles.clear();
-        }
-        mProgressBar.setVisibility(View.GONE);
-        swipeLayout.setRefreshing(false);
-        List<PicuterModle> list = PicuterSinaJson.instance(getActivity()).readJsonPhotoListModles(
-                result);
-        mPicuterAdapter.appendList(list,index);
-        
-        if(mPicuterAdapter.isNeedUplistsModlesData(index)){
-        	listsModles.addAll(list);
-        }
-        mSwipeListView.onBottomComplete();
+    	if(result != null){
+    		
+    		
+    		getMyActivity().setCacheStr("TuPianSinaMeiTuFragment" + currentPagte, result);
+    		if (isRefresh) {
+    			isRefresh = false;
+    			mPicuterAdapter.clear();
+    			listsModles.clear();
+    		}
+    		mProgressBar.setVisibility(View.GONE);
+    		swipeLayout.setRefreshing(false);
+    		List<PicuterModle> list = PicuterSinaJson.instance(getActivity()).readJsonPhotoListModles(
+    				result);
+    		mPicuterAdapter.appendList(list,index);
+    		
+    		if(mPicuterAdapter.isNeedUplistsModlesData(index)){
+    			listsModles.addAll(list);
+    		}
+    		mSwipeListView.onBottomComplete();
+    	}
         
         
     }
