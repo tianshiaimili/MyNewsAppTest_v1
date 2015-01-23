@@ -22,8 +22,10 @@ import android.widget.TextView;
 
 import com.hua.test.adapter.NewsFragmentPagerAdapter;
 import com.hua.test.contants.MyConstants;
-import com.hua.test.fragment.TestFragment;
-import com.hua.test.fragment.VideoHotFragment;
+import com.hua.test.fragment.video.VideoGaoXiaoFragment;
+import com.hua.test.fragment.video.VideoHotFragment;
+import com.hua.test.fragment.video.VideoJingPinFragment;
+import com.hua.test.fragment.video.VideoYuLeFragment;
 import com.hua.test.utils.LogUtils2;
 import com.hua.test.view.ColumnHorizontalScrollView;
 import com.hua.test.widget.swipeback.SwipeBackActivity;
@@ -33,14 +35,6 @@ public class VideoActivity extends SwipeBackActivity {
 
 	// @ViewById(R.id.vPager)
 	protected ViewPager mViewPager;
-	// // @ViewById(R.id.redian)
-	// protected RadioButton mJingXuan;
-	// @ViewById(R.id.dujia)
-	// protected RadioButton mQuTu;
-	// @ViewById(R.id.titan)
-	// protected RadioButton mGuShi;
-	// @ViewById(R.id.mingxing)
-	// protected RadioButton mMeiTu;
 	private ArrayList<Fragment> fragments;
 
 	// use to change the disdance of indicate_bottom_ine
@@ -249,9 +243,9 @@ public class VideoActivity extends SwipeBackActivity {
 	public void initFragments() {
 		fragments = new ArrayList<Fragment>();
 		fragments.add(new VideoHotFragment());
-		fragments.add(new TestFragment());
-		fragments.add(new TestFragment());
-		fragments.add(new TestFragment());
+		fragments.add(new VideoYuLeFragment());
+		fragments.add(new VideoGaoXiaoFragment());
+		fragments.add(new VideoJingPinFragment());
 		LogUtils2
 				.i("mNewsFragmentPagerAdapter == " + mNewsFragmentPagerAdapter);
 		LogUtils2.i("fragments.size == " + fragments.size());

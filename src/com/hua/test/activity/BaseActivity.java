@@ -151,6 +151,26 @@ public class BaseActivity extends FragmentActivity {
 
     }
 
+    
+    /**
+     * 显示dialog2
+     * 
+     * @param msg 显示内容
+     */
+    public void showProgressDialog2() {
+        try {
+
+            if (progressDialog == null) {
+                progressDialog = DialogUtil.createLoadingDialog2(this);
+
+            }
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
     /**
      * 隐藏dialog
      */

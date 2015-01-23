@@ -134,15 +134,15 @@ public class LeftContentFragment extends Fragment implements OnClickListener {
 			break;
 
 		case R.id.ties:
-			enterMessage(view);
+//			enterMessage(view);
 			break;
 
 		case R.id.tianqi:
-			enterTianQi(view);
+//			enterTianQi(view);
 			break;
 
 		case R.id.more:
-			enterMore(view);
+//			enterMore(view);
 			break;
 
 		default:

@@ -1,14 +1,19 @@
 
 package com.hua.test.fragment;
 
+import android.app.Dialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.hua.test.activity.BaseActivity;
 import com.hua.test.contants.Url;
+import com.hua.test.utils.DialogUtil;
 import com.hua.test.utils.StringUtils;
 
 public class BaseFragment extends Fragment {
+	
+	  private Dialog progressDialog;
+	
     public View mView;
     /**
      * 当前页
@@ -102,4 +107,60 @@ public class BaseFragment extends Fragment {
         }
         return false;
     }
+    
+    
+    /**
+     * 显示dialog
+     * 
+     * @param msg 显示内容
+     */
+    public void showProgressDialog() {
+        try {
+
+            if (progressDialog == null) {
+                progressDialog = DialogUtil.createLoadingDialog(getActivity());
+
+            }
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 显示dialog2
+     * 
+     * @param msg 显示内容
+     */
+    public void showProgressDialog2() {
+        try {
+
+            if (progressDialog == null) {
+                progressDialog = DialogUtil.createLoadingDialog2(getActivity());
+
+            }
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    /**
+     * 隐藏dialog
+     */
+    public void dismissProgressDialog() {
+        try {
+
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+    
 }

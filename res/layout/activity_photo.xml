@@ -6,9 +6,18 @@
     android:layout_height="match_parent"
     android:background="@android:color/black"
     android:orientation="vertical" >
+
     <include
         android:id="@+id/title_bar"
         layout="@layout/detail_image_bar" />
+
+    <ProgressBar
+        android:id="@+id/photo_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+         />
 
     <com.hua.test.widget.flipview.FlipView
         android:id="@+id/flip_view"
@@ -18,7 +27,6 @@
         android:layout_centerHorizontal="true"
         flipview:orientation="vertical"
         tools:context="com.hua.test.activity.ImageDetailActivity" >
-
     </com.hua.test.widget.flipview.FlipView>
 
 </RelativeLayout>

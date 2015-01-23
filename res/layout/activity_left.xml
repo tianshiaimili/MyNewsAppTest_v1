@@ -20,13 +20,16 @@
              android:id="@+id/ties"
             style="@style/item_left"
             android:drawableLeft="@drawable/biz_navigation_tab_news"
-            android:visibility="visible"
-            android:text="@string/ties" />
+            android:text="@string/ties" 
+            android:visibility="gone"
+            />
         <Button
             android:id="@+id/tianqi"
             style="@style/item_left"
             android:drawableLeft="@drawable/biz_navigation_tab_read"
-            android:text="@string/tianqi" />
+            android:text="@string/tianqi"
+            android:visibility="gone"
+             />
         <Button
             android:id="@+id/more"
             style="@style/item_left"
