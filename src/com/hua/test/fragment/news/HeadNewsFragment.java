@@ -29,9 +29,10 @@ import android.widget.ProgressBar;
 import com.hua.test.activity.BaseActivity;
 import com.hua.test.activity.DetailsActivity;
 import com.hua.test.activity.ImageDetailActivity;
+import com.hua.test.activity.MainActivityPhone;
 import com.hua.test.activity.R;
 import com.hua.test.adapter.CardsAnimationAdapter;
-import com.hua.test.adapter.NewAdapter;
+import com.hua.test.adapter.news.NewAdapter;
 import com.hua.test.bean.NewModle;
 import com.hua.test.contants.Url;
 import com.hua.test.fragment.BaseFragment;
@@ -53,7 +54,7 @@ import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
  * @author zero
  *
  */
-@SuppressLint("NewApi")
+@SuppressLint({ "NewApi", "ValidFragment" })
 public class HeadNewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
 OnSliderClickListener{
 	/**
@@ -102,7 +103,18 @@ OnSliderClickListener{
 	private TranslateAnimation anim;
 	
 	private String cacheName ="HeadNewsFragment";//this.getClass().getSimpleName();
+	//当前fragment 在viewpage中的第几个页面下的index
+	private int mTabIndex;
     
+	public HeadNewsFragment(int tabIndex) {
+		super();
+		this.mTabIndex = tabIndex;
+	}
+	
+	public HeadNewsFragment() {
+		super();
+	}
+
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message message) {
 			int what = message.what;
@@ -132,7 +144,11 @@ OnSliderClickListener{
     }
 
 	public void initContentView(View tempContentView){
-		showProgressDialog();
+		LogUtils2.i("the tabIndex = "+mTabIndex);
+		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
+		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
+			showProgressDialog();
+		}
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
 //		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);

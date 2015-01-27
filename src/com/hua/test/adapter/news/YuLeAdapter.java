@@ -1,6 +1,7 @@
 
-package com.hua.test.adapter;
+package com.hua.test.adapter.news;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,22 +14,24 @@ import com.hua.test.bean.NewModle;
 import com.hua.test.utils.LogUtils2;
 import com.hua.test.view.NewItemView;
 
-public class FoodBallAdapter extends BaseAdapter {
+public class YuLeAdapter extends BaseAdapter {
     public static List<NewModle> lists = new ArrayList<NewModle>();
+    public static List<SoftReference<NewModle>> weakReferenceLists = new ArrayList<SoftReference<NewModle>>();
 	private String currentItem;
     private Context context;
-    private static FoodBallAdapter mNewAdapter;
+    private static YuLeAdapter mNewAdapter;
     private int oldIndex = -1;
     private boolean isNeedUplistsModlesData;
 
     public void appendList(List<NewModle> list,int newIndex) {
-    	LogUtils2.d("list---"+list.size());
-    	LogUtils2.i("newIndex = "+newIndex+"   oldIndex = "+oldIndex);
+//    	LogUtils2.d("list---"+list.size());
+//    	LogUtils2.i("newIndex = "+newIndex+"   oldIndex = "+oldIndex);
         if (!lists.contains(list.get(0)) && list != null && list.size() > 0 && newIndex != oldIndex) {
         	if (newIndex == 0 && lists.size() == 0) {
 				lists.addAll(list);
 				isNeedUplistsModlesData = true;
 				oldIndex = -1;
+				weakReferenceLists.clear();
 			} else if (newIndex == 0 && lists.size() != 0) {
 
 			} else {
@@ -42,20 +45,27 @@ public class FoodBallAdapter extends BaseAdapter {
 				}
 				LogUtils2.e("*********lists.size==***== " + lists.size());
 			}
+        	
+        	for(NewModle  model : list){
+        		LogUtils2.e("*****for ------       ****");
+        		weakReferenceLists.add(new SoftReference<NewModle>(model));
+        	}
+        	
+//            LogUtils2.e("*********lists.size==***== " +lists.size());
         }
         notifyDataSetChanged();
     }
 
-    public static FoodBallAdapter getFoodBallAdapter(Context tempContext){
+    public static YuLeAdapter getYuLeAdapter(Context tempContext){
     	
     	if(mNewAdapter == null){
-    		mNewAdapter = new FoodBallAdapter(tempContext);
+    		mNewAdapter = new YuLeAdapter(tempContext);
     	}
     	return mNewAdapter;
     	
     }
     
-    public FoodBallAdapter (Context tempContext){
+    public YuLeAdapter (Context tempContext){
     	if(tempContext != null){
     		context = tempContext;
     	}
@@ -70,9 +80,11 @@ public class FoodBallAdapter extends BaseAdapter {
     	
     }
 
+
     public boolean isNeedUplistsModlesData(int newIndex){
     	return isNeedUplistsModlesData;
     }
+
 
     public List<NewModle> getLists() {
 		return lists;
@@ -120,12 +132,20 @@ public class FoodBallAdapter extends BaseAdapter {
             newItemView = (NewItemView) convertView;
         }
 
-        NewModle newModle = lists.get(position);
-        if (newModle.getImagesModle() == null) {
-            newItemView.setTexts(newModle.getTitle(), newModle.getDigest(),
-                    newModle.getImgsrc(), currentItem);
+//        NewModle newModle = lists.get(position);
+//        if (newModle.getImagesModle() == null) {
+//            newItemView.setTexts(newModle.getTitle(), newModle.getDigest(),
+//                    newModle.getImgsrc(), currentItem);
+//        } else {
+//            newItemView.setImages(newModle);
+//        }
+        LogUtils2.d("weakReferenceLists.size =="+weakReferenceLists.size());
+        SoftReference<NewModle> newModle = weakReferenceLists.get(position);
+        if (newModle.get().getImagesModle() == null) {
+            newItemView.setTexts(newModle.get().getTitle(), newModle.get().getDigest(),
+                    newModle.get().getImgsrc(), currentItem);
         } else {
-            newItemView.setImages(newModle);
+            newItemView.setImages(newModle.get());
         }
 
         return newItemView;

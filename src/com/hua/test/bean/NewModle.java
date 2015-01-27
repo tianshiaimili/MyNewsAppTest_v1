@@ -1,13 +1,14 @@
 
 package com.hua.test.bean;
 
+import java.io.Serializable;
 import java.util.List;
 /**
  * 对新闻信息数据格式包装的 po类
  * @author zero
  *
  */
-public class NewModle extends BaseModle {
+public class NewModle extends BaseModle implements Serializable{
     /**
      * 
      */

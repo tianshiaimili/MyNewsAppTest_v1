@@ -39,7 +39,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hua.test.activity.WelcomeActivity" >
+        <activity android:name="com.hua.test.activity.WelcomeActivity"
+            android:hardwareAccelerated="true"
+             >
         </activity>
 
         <!-- 新闻的activity -->

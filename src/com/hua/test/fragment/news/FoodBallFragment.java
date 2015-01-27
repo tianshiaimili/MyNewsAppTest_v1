@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -26,9 +27,10 @@ import android.widget.ProgressBar;
 import com.hua.test.activity.BaseActivity;
 import com.hua.test.activity.DetailsActivity;
 import com.hua.test.activity.ImageDetailActivity;
+import com.hua.test.activity.MainActivityPhone;
 import com.hua.test.activity.R;
 import com.hua.test.adapter.CardsAnimationAdapter;
-import com.hua.test.adapter.FoodBallAdapter;
+import com.hua.test.adapter.news.FoodBallAdapter;
 import com.hua.test.bean.NewModle;
 import com.hua.test.contants.Url;
 import com.hua.test.fragment.BaseFragment;
@@ -47,6 +49,7 @@ import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.umeng.analytics.MobclickAgent;
 
 //@EFragment(R.layout.activity_main)
+@SuppressLint("ValidFragment")
 public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
         OnSliderClickListener {
 	/** 头部的横幅滑动布局*/
@@ -77,8 +80,18 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
     private boolean isRefresh = false;
     private static final int RESPONSE_OK = 0;
     private String cacheName ="FoodBallFragment";//this.getClass().getSimpleName();
-
+	//当前fragment 在viewpage中的第几个页面下的index
+	private int mTabIndex;
     
+	public FoodBallFragment(int tabIndex) {
+		super();
+		this.mTabIndex = tabIndex;
+	}
+    
+	public FoodBallFragment() {
+		super();
+	}
+
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message message) {
 			int what = message.what;
@@ -115,7 +128,14 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
 	public void initContentView(View tempContentView){
-		showProgressDialog();
+//		showProgressDialog();
+		
+		LogUtils2.i("the tabIndex = "+mTabIndex);
+		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
+		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
+			showProgressDialog();
+		}
+		
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
 //		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);

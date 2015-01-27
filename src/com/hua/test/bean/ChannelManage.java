@@ -27,13 +27,16 @@ public class ChannelManage {
     static {
         defaultUserChannels = new ArrayList<ChannelItem>();
         defaultOtherChannels = new ArrayList<ChannelItem>();
+        
+        
         defaultUserChannels.add(new ChannelItem(1, "头条", 1, 1));
         defaultUserChannels.add(new ChannelItem(2, "足球", 2, 1));
         defaultUserChannels.add(new ChannelItem(3, "娱乐", 3, 1));
         defaultUserChannels.add(new ChannelItem(4, "体育", 4, 1));
-        defaultUserChannels.add(new ChannelItem(5, "财经", 5, 1));
+        defaultUserChannels.add(new ChannelItem(5, "电影", 12, 0));
         defaultUserChannels.add(new ChannelItem(6, "科技", 6, 1));
         // defaultUserChannels.add(new ChannelItem(7, "图片", 1, 0));
+        
         defaultOtherChannels.add(new ChannelItem(7, "CBA", 1, 0));
         defaultOtherChannels.add(new ChannelItem(8, "笑话", 2, 0));
         defaultOtherChannels.add(new ChannelItem(9, "汽车", 3, 0));
@@ -46,14 +49,15 @@ public class ChannelManage {
         defaultOtherChannels.add(new ChannelItem(16, "电台", 10, 0));
         defaultOtherChannels.add(new ChannelItem(17, "情感", 11, 0));
         ////
-        defaultUserChannels.add(new ChannelItem(18, "电影", 12, 0));
+        
+        defaultUserChannels.add(new ChannelItem(18, "财经", 5, 1));
         defaultUserChannels.add(new ChannelItem(19, "NBA", 13, 0));
         defaultUserChannels.add(new ChannelItem(20, "数码", 14, 0));
         defaultUserChannels.add(new ChannelItem(21, "移动", 15, 0));
-        defaultUserChannels.add(new ChannelItem(22, "彩票", 16, 0));
-        defaultUserChannels.add(new ChannelItem(23, "教育", 17, 0));
-        defaultUserChannels.add(new ChannelItem(24, "论坛", 18, 0));
         //
+        defaultOtherChannels.add(new ChannelItem(22, "彩票", 16, 0));
+        defaultOtherChannels.add(new ChannelItem(23, "教育", 17, 0));
+        defaultOtherChannels.add(new ChannelItem(24, "论坛", 18, 0));
         defaultOtherChannels.add(new ChannelItem(25, "旅游", 19, 0));
         defaultOtherChannels.add(new ChannelItem(26, "手机", 20, 0));
         defaultOtherChannels.add(new ChannelItem(27, "博客", 21, 0));
@@ -61,7 +65,7 @@ public class ChannelManage {
         defaultOtherChannels.add(new ChannelItem(29, "家居", 23, 0));
         defaultOtherChannels.add(new ChannelItem(30, "暴雪", 24, 0));
         ///
-        defaultUserChannels.add(new ChannelItem(31, "亲子", 25, 0));
+        defaultOtherChannels.add(new ChannelItem(31, "亲子", 25, 0));
     }
 
     private ChannelManage(SQLHelper paramDBHelper) throws SQLException {

@@ -1,4 +1,4 @@
-package com.hua.test.adapter;
+package com.hua.test.adapter.news;
 
 import java.util.ArrayList;
 import java.util.List;

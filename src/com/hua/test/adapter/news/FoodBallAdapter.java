@@ -1,5 +1,5 @@
 
-package com.hua.test.adapter;
+package com.hua.test.adapter.news;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +13,17 @@ import com.hua.test.bean.NewModle;
 import com.hua.test.utils.LogUtils2;
 import com.hua.test.view.NewItemView;
 
-public class YuLeAdapter extends BaseAdapter {
+public class FoodBallAdapter extends BaseAdapter {
     public static List<NewModle> lists = new ArrayList<NewModle>();
 	private String currentItem;
     private Context context;
-    private static YuLeAdapter mNewAdapter;
+    private static FoodBallAdapter mNewAdapter;
     private int oldIndex = -1;
     private boolean isNeedUplistsModlesData;
 
     public void appendList(List<NewModle> list,int newIndex) {
-//    	LogUtils2.d("list---"+list.size());
-//    	LogUtils2.i("newIndex = "+newIndex+"   oldIndex = "+oldIndex);
+    	LogUtils2.d("list---"+list.size());
+    	LogUtils2.i("newIndex = "+newIndex+"   oldIndex = "+oldIndex);
         if (!lists.contains(list.get(0)) && list != null && list.size() > 0 && newIndex != oldIndex) {
         	if (newIndex == 0 && lists.size() == 0) {
 				lists.addAll(list);
@@ -42,21 +42,20 @@ public class YuLeAdapter extends BaseAdapter {
 				}
 				LogUtils2.e("*********lists.size==***== " + lists.size());
 			}
-//            LogUtils2.e("*********lists.size==***== " +lists.size());
         }
         notifyDataSetChanged();
     }
 
-    public static YuLeAdapter getYuLeAdapter(Context tempContext){
+    public static FoodBallAdapter getFoodBallAdapter(Context tempContext){
     	
     	if(mNewAdapter == null){
-    		mNewAdapter = new YuLeAdapter(tempContext);
+    		mNewAdapter = new FoodBallAdapter(tempContext);
     	}
     	return mNewAdapter;
     	
     }
     
-    public YuLeAdapter (Context tempContext){
+    public FoodBallAdapter (Context tempContext){
     	if(tempContext != null){
     		context = tempContext;
     	}
@@ -71,11 +70,9 @@ public class YuLeAdapter extends BaseAdapter {
     	
     }
 
-
     public boolean isNeedUplistsModlesData(int newIndex){
     	return isNeedUplistsModlesData;
     }
-
 
     public List<NewModle> getLists() {
 		return lists;

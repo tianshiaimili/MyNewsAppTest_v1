@@ -3,6 +3,7 @@ package com.hua.test.fragment.video;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +21,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
 
 import com.hua.test.activity.BaseActivity;
+import com.hua.test.activity.PictureSinaActivity;
 import com.hua.test.activity.R;
+import com.hua.test.activity.VideoActivity;
 import com.hua.test.activity.VideoPlayActivity;
 import com.hua.test.adapter.CardsAnimationAdapter;
 import com.hua.test.adapter.VideoAdapter;
@@ -37,6 +40,7 @@ import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.umeng.analytics.MobclickAgent;
 
 //@EFragment(R.layout.activity_main)
+@SuppressLint("ValidFragment")
 public class VideoHotFragment extends BaseFragment implements
 		SwipeRefreshLayout.OnRefreshListener {
 	// @ViewById(R.id.swipe_container)
@@ -61,7 +65,18 @@ public class VideoHotFragment extends BaseFragment implements
 	private static final int RESPONSE_OK = 0;
 	private String cacheName ="VideoHotFragment";
 
-	
+	//当前fragment 在viewpage中的第几个页面下的index
+	private int mTabIndex;
+    
+	public VideoHotFragment(int tabIndex) {
+		super();
+		this.mTabIndex = tabIndex;
+	}
+    
+	public VideoHotFragment() {
+		super();
+	}
+    
     
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message message) {
@@ -89,7 +104,15 @@ public class VideoHotFragment extends BaseFragment implements
 
 	// @AfterViews
 	protected void initContentView(View tempContentView) {
-		showProgressDialog();
+//		showProgressDialog();
+		
+		LogUtils2.i("the tabIndex = "+mTabIndex);
+		LogUtils2.d("the MainActivityPhone tabIndex = "+VideoActivity.getColumnSelectIndex());
+		
+		if(mTabIndex == VideoActivity.getColumnSelectIndex()){
+			showProgressDialog();
+		}
+		
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
 //		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);

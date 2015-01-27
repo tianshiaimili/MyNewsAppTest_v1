@@ -121,7 +121,9 @@ public class BaseFragment extends Fragment {
                 progressDialog = DialogUtil.createLoadingDialog(getActivity());
 
             }
-            progressDialog.show();
+            if(!progressDialog.isShowing()){
+            	progressDialog.show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

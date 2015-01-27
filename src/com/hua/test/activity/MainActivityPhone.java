@@ -32,8 +32,15 @@ import com.hua.test.bean.ChannelItem;
 import com.hua.test.bean.ChannelManage;
 import com.hua.test.fragment.LeftContentFragment;
 import com.hua.test.fragment.TestFragment;
+import com.hua.test.fragment.news.CaiJingFragment;
+import com.hua.test.fragment.news.DianYingFragment;
 import com.hua.test.fragment.news.FoodBallFragment;
 import com.hua.test.fragment.news.HeadNewsFragment;
+import com.hua.test.fragment.news.KeJiFragment;
+import com.hua.test.fragment.news.NBAFragment;
+import com.hua.test.fragment.news.ShuMaFragment;
+import com.hua.test.fragment.news.TiYuFragment;
+import com.hua.test.fragment.news.YiDongFragment;
 import com.hua.test.fragment.news.YuLeFragment;
 import com.hua.test.utils.LogUtils2;
 import com.hua.test.view.ColumnHorizontalScrollView;
@@ -125,7 +132,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 	/**the beginPosition of the indicate_line*/
 	private int beginPosition;
 	/***/
-	private int currentFragmentIndex;
+	private static int currentFragmentIndex;
 	/**if the viewPage have drag over
 	 * */
 	private boolean isEnd;
@@ -508,28 +515,34 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
             // initFragment(nameString);
             // map.put(nameString, nameString);
             // newfragment.setArguments(data);
-            fragments.add(initFragment(nameString));
+            //添加参数i 是为了 知道此fragment 在viewpage的第几个，好判断是否显示progressBar
+            fragments.add(initFragment(nameString,i));
             // fragments.add(nameString);
         }
         mNewsFragmentPagerAdapter.appendList(fragments);
     }
     
     //TODO 初始化Headitem
-    public Fragment initFragment(String channelName) {
+    public Fragment initFragment(String channelName,int tabIndex) {
         if (channelName.equals("头条")) {
-            newfragment = new HeadNewsFragment();
+            newfragment = new HeadNewsFragment(tabIndex);
         } else if (channelName.equals("足球")) {
-            newfragment = new FoodBallFragment();
+            newfragment = new FoodBallFragment(tabIndex);
         } else if (channelName.equals("娱乐")) {
-            newfragment = new YuLeFragment();
+            newfragment = new YuLeFragment(tabIndex);
+//            newfragment = new YuLeFragment2();
+//        	newfragment = new YuLeFragment2(getApplicationContext(), new YuLeAdapter2(getApplicationContext()), "YuLeFragment", Url.YuLeId);
+        	LogUtils2.e("the newfragment = "+ newfragment.getClass().hashCode());
         } else if (channelName.equals("体育")) {
-            newfragment = new TestFragment();
+//            newfragment = new TiYuFragment2(getApplicationContext(), new TiYuAdapter3(getApplicationContext()), "TiYuFragment", Url.TiYuId);
+        	newfragment = new TiYuFragment(tabIndex);
+        	LogUtils2.e("the newfragment = == "+ newfragment.getClass().hashCode());
         } else if (channelName.equals("财经")) {
-            newfragment = new TestFragment();
+            newfragment = new CaiJingFragment(tabIndex);
         } else if (channelName.equals("科技")) {
-            newfragment = new TestFragment();
+            newfragment = new KeJiFragment(tabIndex);
         } else if (channelName.equals("电影")) {
-            newfragment = new TestFragment();
+            newfragment = new DianYingFragment(tabIndex);
         } else if (channelName.equals("汽车")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("笑话")) {
@@ -555,11 +568,11 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         } else if (channelName.equals("图片")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("NBA")) {
-            newfragment = new TestFragment();
+            newfragment = new NBAFragment(tabIndex);
         } else if (channelName.equals("数码")) {
-            newfragment = new TestFragment();
+            newfragment = new ShuMaFragment(tabIndex);
         } else if (channelName.equals("移动")) {
-            newfragment = new TestFragment();
+            newfragment = new YiDongFragment(tabIndex);
         } else if (channelName.equals("彩票")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("教育")) {
@@ -608,5 +621,14 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 		}
     	
     }
+
+    //获取当前viagepage的position 以判断是否在对应的fragment 显示diog
+	public static int getCurrentFragmentIndex() {
+		return currentFragmentIndex;
+	}
+    
+    
+    
+    
     
 }

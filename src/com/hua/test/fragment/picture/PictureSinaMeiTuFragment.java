@@ -3,6 +3,7 @@ package com.hua.test.fragment.picture;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ import android.widget.ProgressBar;
 import com.hua.test.activity.BaseActivity;
 import com.hua.test.activity.DetailsActivity;
 import com.hua.test.activity.ImageDetailActivity;
+import com.hua.test.activity.MainActivityPhone;
 import com.hua.test.activity.PictureDetailActivity;
+import com.hua.test.activity.PictureSinaActivity;
 import com.hua.test.activity.R;
 import com.hua.test.adapter.CardsAnimationAdapter;
 import com.hua.test.adapter.PicuterAdapter_MeiTu;
@@ -36,6 +39,7 @@ import com.hua.test.widget.swipelistview.SwipeListView;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.umeng.analytics.MobclickAgent;
 
+@SuppressLint("ValidFragment")
 public class PictureSinaMeiTuFragment extends BaseFragment implements
 SwipeRefreshLayout.OnRefreshListener{
 
@@ -47,7 +51,7 @@ SwipeRefreshLayout.OnRefreshListener{
 //    @ViewById(R.id.listview)
     protected SwipeListView mSwipeListView;
 //    @ViewById(R.id.progressBar)
-    protected ProgressBar mProgressBar;
+//    protected ProgressBar mProgressBar;
 
 //    public int index = 1;
     /**标记获取了的页数下标*/
@@ -59,7 +63,18 @@ SwipeRefreshLayout.OnRefreshListener{
     private static final int RESPONSE_OK = 0;
     private String cacheName ="PictureSinaMeiTuFragment";
 
-
+	//当前fragment 在viewpage中的第几个页面下的index
+	private int mTabIndex;
+    
+	public PictureSinaMeiTuFragment(int tabIndex) {
+		super();
+		this.mTabIndex = tabIndex;
+	}
+    
+	public PictureSinaMeiTuFragment() {
+		super();
+	}
+	
     
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message message) {
@@ -202,12 +217,16 @@ SwipeRefreshLayout.OnRefreshListener{
 	
 	public void initContentView(View tempContentView){
 		
+//		showProgressDialog();
+		if(mTabIndex == PictureSinaActivity.getCurrentFragmentIndex()){
+			showProgressDialog();
+		}
+		
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(this);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
-		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
-		mProgressBar.setVisibility(View.GONE);
-		showProgressDialog();
+//		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
+//		mProgressBar.setVisibility(View.GONE);
         InitView.instance().initSwipeRefreshLayout(swipeLayout);
         InitView.instance().initListView(mSwipeListView, getActivity());
         // mSwipeListView.addHeaderView(headView);

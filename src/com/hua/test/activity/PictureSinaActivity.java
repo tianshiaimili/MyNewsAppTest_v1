@@ -50,7 +50,7 @@ public class PictureSinaActivity extends SwipeBackActivity{
 	/**the beginPosition of the indicate_line*/
 	private int beginPosition;
 	/***/
-	private int currentFragmentIndex;
+	private static int currentFragmentIndex;
 	/**if the viewPage have drag over
 	 * */
 	private boolean isEnd;
@@ -62,7 +62,7 @@ public class PictureSinaActivity extends SwipeBackActivity{
     /**Bar 水平部分滑动的距离*/ 
     private int scroll_distance = 0;
     private int bottom_indicate_line_duration =150;
-	
+    
     /**
      * Bar 底部的标志划线
      */
@@ -78,7 +78,7 @@ public class PictureSinaActivity extends SwipeBackActivity{
 	private LinearLayout mRadioGroup_content;
 	
     /** 当前选中的栏目 */
-    private int columnSelectIndex = 0;
+    private static int columnSelectIndex = 0;
     
     /**Horizontal bar上 item的个数*/
     private int itemCount = 4;
@@ -90,6 +90,9 @@ public class PictureSinaActivity extends SwipeBackActivity{
     /***/
     private boolean isGet_Scroll_Distance;
 
+    
+    
+    
     public void initContentView(){
     	mColumnHorizontalScrollView = (ColumnHorizontalScrollView) findViewById(R.id.mColumnHorizontalScrollView);
     	mRadioGroup_content = (LinearLayout) findViewById(R.id.mRadioGroup_content);
@@ -243,10 +246,10 @@ public class PictureSinaActivity extends SwipeBackActivity{
     /***/
     public void initFragments() {
         fragments = new ArrayList<Fragment>();
-        fragments.add(new PictureSinaMeiTuFragment());
-        fragments.add(new PictureSinaQuTuFragment());
-        fragments.add(new PictureSinaJingXuanFragment());
-        fragments.add(new PictureSinaGuShiFragment());
+        fragments.add(new PictureSinaMeiTuFragment(0));
+        fragments.add(new PictureSinaQuTuFragment(1));
+        fragments.add(new PictureSinaJingXuanFragment(2));
+        fragments.add(new PictureSinaGuShiFragment(3));
         LogUtils2.i("mNewsFragmentPagerAdapter == "+mNewsFragmentPagerAdapter);
         LogUtils2.i("fragments.size == "+fragments.size());
         mNewsFragmentPagerAdapter.appendList(fragments);
@@ -335,6 +338,13 @@ public class PictureSinaActivity extends SwipeBackActivity{
 	
     
     
+    //
+    public static int getCurrentFragmentIndex() {
+    	return currentFragmentIndex;
+    }
+    
+  /////////////////////////////////  
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -371,6 +381,8 @@ public class PictureSinaActivity extends SwipeBackActivity{
     	LogUtils2.w("***onDestroy***");
 //    	newAdapter.getLists().clear();
     }
+    
+    
     
 
 }

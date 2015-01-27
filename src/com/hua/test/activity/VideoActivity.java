@@ -43,7 +43,7 @@ public class VideoActivity extends SwipeBackActivity {
 	/** the beginPosition of the indicate_line */
 	private int beginPosition;
 	/***/
-	private int currentFragmentIndex;
+	private static int currentFragmentIndex;
 	/**
 	 * if the viewPage have drag over
 	 * */
@@ -72,7 +72,7 @@ public class VideoActivity extends SwipeBackActivity {
 	private LinearLayout mRadioGroup_content;
 
 	/** 当前选中的栏目 */
-	private int columnSelectIndex = 0;
+	private static int columnSelectIndex = 0;
 
 	/** Horizontal bar上 item的个数 */
 	private int itemCount = 4;
@@ -242,10 +242,10 @@ public class VideoActivity extends SwipeBackActivity {
 	/***/
 	public void initFragments() {
 		fragments = new ArrayList<Fragment>();
-		fragments.add(new VideoHotFragment());
-		fragments.add(new VideoYuLeFragment());
-		fragments.add(new VideoGaoXiaoFragment());
-		fragments.add(new VideoJingPinFragment());
+		fragments.add(new VideoHotFragment(0));
+		fragments.add(new VideoYuLeFragment(1));
+		fragments.add(new VideoGaoXiaoFragment(2));
+		fragments.add(new VideoJingPinFragment(3));
 		LogUtils2
 				.i("mNewsFragmentPagerAdapter == " + mNewsFragmentPagerAdapter);
 		LogUtils2.i("fragments.size == " + fragments.size());
@@ -333,6 +333,15 @@ public class VideoActivity extends SwipeBackActivity {
 
 		}
 	}
+
+	
+	
+	////
+	public static int getColumnSelectIndex() {
+		return columnSelectIndex;
+	}
+	
+	//////////////////////////////////////////
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
