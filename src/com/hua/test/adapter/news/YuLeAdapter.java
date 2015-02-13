@@ -31,7 +31,7 @@ public class YuLeAdapter extends BaseAdapter {
 				lists.addAll(list);
 				isNeedUplistsModlesData = true;
 				oldIndex = -1;
-				weakReferenceLists.clear();
+//				weakReferenceLists.clear();
 			} else if (newIndex == 0 && lists.size() != 0) {
 
 			} else {
@@ -46,10 +46,10 @@ public class YuLeAdapter extends BaseAdapter {
 				LogUtils2.e("*********lists.size==***== " + lists.size());
 			}
         	
-        	for(NewModle  model : list){
-        		LogUtils2.e("*****for ------       ****");
-        		weakReferenceLists.add(new SoftReference<NewModle>(model));
-        	}
+//        	for(NewModle  model : list){
+//        		LogUtils2.e("*****for ------       ****");
+//        		weakReferenceLists.add(new SoftReference<NewModle>(model));
+//        	}
         	
 //            LogUtils2.e("*********lists.size==***== " +lists.size());
         }
@@ -132,21 +132,21 @@ public class YuLeAdapter extends BaseAdapter {
             newItemView = (NewItemView) convertView;
         }
 
-//        NewModle newModle = lists.get(position);
-//        if (newModle.getImagesModle() == null) {
-//            newItemView.setTexts(newModle.getTitle(), newModle.getDigest(),
-//                    newModle.getImgsrc(), currentItem);
-//        } else {
-//            newItemView.setImages(newModle);
-//        }
-        LogUtils2.d("weakReferenceLists.size =="+weakReferenceLists.size());
-        SoftReference<NewModle> newModle = weakReferenceLists.get(position);
-        if (newModle.get().getImagesModle() == null) {
-            newItemView.setTexts(newModle.get().getTitle(), newModle.get().getDigest(),
-                    newModle.get().getImgsrc(), currentItem);
+        NewModle newModle = lists.get(position);
+        if (newModle.getImagesModle() == null) {
+            newItemView.setTexts(newModle.getTitle(), newModle.getDigest(),
+                    newModle.getImgsrc(), currentItem);
         } else {
-            newItemView.setImages(newModle.get());
+            newItemView.setImages(newModle);
         }
+//        LogUtils2.d("weakReferenceLists.size =="+weakReferenceLists.size());
+//        SoftReference<NewModle> newModle = weakReferenceLists.get(position);
+//        if (newModle.get().getImagesModle() == null) {
+//            newItemView.setTexts(newModle.get().getTitle(), newModle.get().getDigest(),
+//                    newModle.get().getImgsrc(), currentItem);
+//        } else {
+//            newItemView.setImages(newModle.get());
+//        }
 
         return newItemView;
     }

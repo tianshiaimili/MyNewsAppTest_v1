@@ -42,7 +42,7 @@
                     <LinearLayout
                         android:id="@+id/bottom_indicate_line"
                         android:layout_width="100dp"
-                        android:layout_height="25dp"
+                        android:layout_height="26dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="12.5dip"
                         android:layout_marginRight="12.5dip"

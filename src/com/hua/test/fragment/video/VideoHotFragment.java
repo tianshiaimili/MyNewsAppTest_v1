@@ -48,7 +48,7 @@ public class VideoHotFragment extends BaseFragment implements
 	// @ViewById(R.id.listview)
 	protected SwipeListView mSwipeListView;
 	// @ViewById(R.id.progressBar)
-//	protected ProgressBar mProgressBar;
+	protected ProgressBar mProgressBar;
 
 
 	// @Bean
@@ -86,7 +86,10 @@ public class VideoHotFragment extends BaseFragment implements
 			switch (what) {
 			case RESPONSE_OK:
 				String result = (String) message.obj;
-				getResult(result);
+				if(result != null){
+					
+					getResult(result);
+				}
 				// mHandler.obtainMessage(ShowFootView).sendToTarget();
 				break;
 			default:
@@ -106,16 +109,16 @@ public class VideoHotFragment extends BaseFragment implements
 	protected void initContentView(View tempContentView) {
 //		showProgressDialog();
 		
-		LogUtils2.i("the tabIndex = "+mTabIndex);
-		LogUtils2.d("the MainActivityPhone tabIndex = "+VideoActivity.getColumnSelectIndex());
-		
-		if(mTabIndex == VideoActivity.getColumnSelectIndex()){
-			showProgressDialog();
-		}
+//		LogUtils2.i("the tabIndex = "+mTabIndex);
+//		LogUtils2.d("the MainActivityPhone tabIndex = "+VideoActivity.getColumnSelectIndex());
+//		
+//		if(mTabIndex == VideoActivity.getColumnSelectIndex()){
+//			showProgressDialog();
+//		}
 		
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
-//		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
+		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
 //		mProgressBar.setVisibility(View.GONE);
 		
 		swipeLayout.setOnRefreshListener(this);
@@ -147,8 +150,8 @@ public class VideoHotFragment extends BaseFragment implements
 			loadNewList(url);
 		} else {
 			mSwipeListView.onBottomComplete();
-//			mProgressBar.setVisibility(View.GONE);
-			dismissProgressDialog();
+			mProgressBar.setVisibility(View.GONE);
+//			dismissProgressDialog();
 			getMyActivity().showShortToast(getString(R.string.not_network));
 			String result = getMyActivity().getCacheStr(
 					cacheName + currentPagte);
@@ -202,15 +205,15 @@ public class VideoHotFragment extends BaseFragment implements
 				videoAdapter.clear();
 				listsModles.clear();
 			}
-//			mProgressBar.setVisibility(View.GONE);
 			swipeLayout.setRefreshing(false);
 			
 			List<VideoModle> list = ViedoListJson.instance(getActivity())
 					.readJsonVideoModles(result, Url.VideoReDianId);
 			
+			mProgressBar.setVisibility(View.GONE);
 			videoAdapter.appendList(list,index);
 			
-			dismissProgressDialog();
+//			dismissProgressDialog();
 			
 			if(videoAdapter.isNeedUplistsModlesData(index)){
 				listsModles.addAll(list);
@@ -266,6 +269,11 @@ public class VideoHotFragment extends BaseFragment implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			
+			if(mProgressBar.getVisibility() == View.VISIBLE){
+				return;
+			}
+			
 			VideoModle videoModle = listsModles.get(position);
 			enterDetailActivity(videoModle);
 		}

@@ -2,8 +2,11 @@ package com.hua.test.activity;
 
 import java.util.ArrayList;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.offers.OffersManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +21,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,21 +31,31 @@ import android.widget.TextView;
 import com.hua.tes.slidingmenu.BaseSlidingFragmentActivity;
 import com.hua.tes.slidingmenu.SlidingMenu;
 import com.hua.test.adapter.NewsFragmentPagerAdapter;
+import com.hua.test.adapter.NewsFragmentStatePagerAdapter;
 import com.hua.test.app.App;
 import com.hua.test.bean.ChannelItem;
 import com.hua.test.bean.ChannelManage;
 import com.hua.test.fragment.LeftContentFragment;
+import com.hua.test.fragment.ShiShangFragment;
 import com.hua.test.fragment.TestFragment;
+import com.hua.test.fragment.news.CBAFragment;
 import com.hua.test.fragment.news.CaiJingFragment;
 import com.hua.test.fragment.news.DianYingFragment;
 import com.hua.test.fragment.news.FoodBallFragment;
 import com.hua.test.fragment.news.HeadNewsFragment;
 import com.hua.test.fragment.news.KeJiFragment;
+import com.hua.test.fragment.news.LvYouFragment;
 import com.hua.test.fragment.news.NBAFragment;
+import com.hua.test.fragment.news.QiCheFragment;
+import com.hua.test.fragment.news.SheHuiFragment;
+import com.hua.test.fragment.news.ShouJiFragment;
 import com.hua.test.fragment.news.ShuMaFragment;
 import com.hua.test.fragment.news.TiYuFragment;
+import com.hua.test.fragment.news.XiaoHuaFragment;
 import com.hua.test.fragment.news.YiDongFragment;
+import com.hua.test.fragment.news.YouXiFragment;
 import com.hua.test.fragment.news.YuLeFragment;
+import com.hua.test.utils.DeviceUtil;
 import com.hua.test.utils.LogUtils2;
 import com.hua.test.view.ColumnHorizontalScrollView;
 import com.hua.test.view.CustomerToast;
@@ -52,6 +66,9 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 
 
 	private NewsFragmentPagerAdapter mNewsFragmentPagerAdapter;
+	
+//	private NewsFragmentStatePagerAdapter mNewsFragmentPagerAdapter;
+	
 	/** bar部分水平的HorizontalScrollView */
 	private ColumnHorizontalScrollView mColumnHorizontalScrollView;
 	/**
@@ -139,7 +156,8 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 
 	private int bottom_indicate_line_duration =150;
 	
-	
+	/**判断是否点击选中 而不是滑动选中的*/
+	private  boolean isClickSelect;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,13 +169,22 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
     	initContentView();
     	initViewPager();
     	setChangelView();
+//    	initYouMI();
+    	////
+//    	DeviceUtil.getDeviceInfo(context);
     	
     }
 	
-    @Override
+//    /**初始化 有米广告*/
+//    private void initYouMI() {
+//		AdManager.getInstance(context).init("217849af92c2b80f", "31eced554a9c8e43", false);
+//		OffersManager.getInstance(context);
+//	}
+
+	@Override
     public void onResume() {
     	super.onResume();
-    	 MobclickAgent.onResume(this);
+//    	 MobclickAgent.onResume(this);
     	 LogUtils2.w("*********onResume********");
     	 if(isChange_Channel){
     		 LogUtils2.i("*********onResume.isChange_Channel********");
@@ -171,7 +198,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
     @Override
     public void onPause() {
     	super.onPause();
-    	  MobclickAgent.onPause(this);
+//    	  MobclickAgent.onPause(this);
     	  LogUtils2.w("*********onPause********");
     }
     
@@ -207,6 +234,8 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
     @Override
     public void onDestroy() {
     	super.onDestroy();
+    	//有米广告
+    	OffersManager.getInstance(MainActivityPhone.this).onAppExit();
     }
     
     /**
@@ -250,7 +279,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 		top_head = (ImageView) findViewById(R.id.top_head);
 		top_more = (ImageView) findViewById(R.id.top_more);
 		buttom_indicate_line = (LinearLayout) findViewById(R.id.bottom_indicate_line);
-//		buttom_indicate_line.s
+//		buttom_indicate_line.setVisibility(View.GONE);
         mScreenWidth = getResources().getDisplayMetrics().widthPixels;
         item_width = (int) (mScreenWidth / 7 + 0.5f); // 一个Item宽度为屏幕的1/7
 //        buttom_indicate_line.setLayoutParams(new FrameLayout.LayoutParams(mItemWidth, 3));
@@ -289,6 +318,8 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
     }
 
     private void initViewPager() {
+//    	mNewsFragmentPagerAdapter = new NewsFragmentStatePagerAdapter(
+//                getSupportFragmentManager());
     	mNewsFragmentPagerAdapter = new NewsFragmentPagerAdapter(
                 getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(1);
@@ -319,6 +350,9 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 					animation = new TranslateAnimation(endPosition, currentFragmentIndex * scroll_distance, 0, 0);
 					animation.setFillAfter(true);
 					animation.setDuration(bottom_indicate_line_duration);
+					if(isClickSelect){
+						mSelectTextView.setBackgroundColor(Color.parseColor("#00000000"));
+					}
 					buttom_indicate_line.startAnimation(animation);
 					mColumnHorizontalScrollView.invalidate();
 					endPosition = currentFragmentIndex * scroll_distance;
@@ -329,7 +363,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         @Override
         public void onPageScrolled(int position, float positionOffset,
 				int positionOffsetPixels) {
-//        	LogUtils2.e("position == "+position);
+//        	LogUtils2.e("**************onPageScrolled == "+position);
 			if(!isEnd){
 				if(currentFragmentIndex == position){
 					endPosition = scroll_distance * currentFragmentIndex + 
@@ -345,6 +379,9 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 				Animation mAnimation = new TranslateAnimation(beginPosition, endPosition, 0, 0);
 				mAnimation.setFillAfter(true);
 				mAnimation.setDuration(bottom_indicate_line_duration);
+				if(isClickSelect){
+					mSelectTextView.setBackgroundColor(Color.parseColor("#00000000"));
+				}
 				buttom_indicate_line.startAnimation(mAnimation);
 				mColumnHorizontalScrollView.invalidate();
 				beginPosition = endPosition;
@@ -356,7 +393,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         @Override
         public void onPageSelected(int position) {
         	
-//        	LogUtils2.i("******onPageSelected scroll_distance= "+scroll_distance);
+//        	LogUtils2.i("******onPageSelected*********** ");
 //        	LogUtils2.e("******onPageSelected endPosition = "+endPosition);
 			Animation animation = new TranslateAnimation(endPosition, position* scroll_distance, 0, 0);
 			animation.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -369,53 +406,124 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         	mViewPager.setCurrentItem(position);
            int temp_scroll_distance = selectTab(position);
            
-			if (animation != null) {
+			if (animation != null ) {
 //				LogUtils2.d("******onPageSelected");
 				animation.setFillAfter(true);
 				animation.setDuration(bottom_indicate_line_duration);
+				animation.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation animation) {
+						
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						if(mSelectTextView != null){
+							
+							mSelectTextView.setBackgroundColor(Color.parseColor("#00000000"));
+//							mSelectTextView.setSelected(false);
+							buttom_indicate_line.setBackgroundResource(R.drawable.bottom_indicate_line_color);
+						}
+					}
+				});
 				buttom_indicate_line.startAnimation(animation);
+				
 //				mColumnHorizontalScrollView.smoothScrollTo((currentFragmentIndex - 1) * temp_scroll_distance , 0);
-				mColumnHorizontalScrollView.smoothScrollTo(temp_scroll_distance , 0);
+				if(isCanScrollBack){
+					
+					mColumnHorizontalScrollView.smoothScrollTo(temp_scroll_distance , 0);
+				}else {
+					
+				}
 			}
             
         }
     };
 	
-    
-
-    /**
-     * 选择的Column里面的Tab
-     */
+    //用来判断返回滑动的Bar的情况
+    private boolean isCanScrollBack;
+    private TextView mSelectTextView;
     private int selectTab(int tab_postion) {
-        columnSelectIndex = tab_postion;
+//        columnSelectIndex = tab_postion;
         LogUtils2.i("selectTab  == "+tab_postion);
         int scrollDistance = 0 ;
-        for (int i = 0; i < mRadioGroup_content.getChildCount(); i++) {
-            View checkView = mRadioGroup_content.getChildAt(tab_postion);
-            int k = checkView.getMeasuredWidth();
-            int l = checkView.getLeft();
-             scrollDistance = l + k / 2 - mScreenWidth / 2;
-//            LogUtils2.i("scrollDistance  == "+scrollDistance);
-            // rg_nav_content.getParent()).smoothScrollTo(i2, 0);
-//            mColumnHorizontalScrollView.smoothScrollTo(scrollDistance, 0);
-            // mColumnHorizontalScrollView.smoothScrollTo((position - 2) *
-            // mItemWidth , 0);
-        }
-        // 判断是否选中
-        for (int j = 0; j < mRadioGroup_content.getChildCount(); j++) {
-            View checkView = mRadioGroup_content.getChildAt(j);
-            boolean ischeck;
-            if (j == tab_postion) {
-                ischeck = true;
-            } else {
-                ischeck = false;
+            View tempCheckView = mRadioGroup_content.getChildAt(tab_postion);
+            int width = tempCheckView.getMeasuredWidth();
+            int left = tempCheckView.getLeft();
+            
+//            LogUtils2.e("tempCheckView.getX == "+tempCheckView.getX());
+//            LogUtils2.e("tempCheckView.left == "+tempCheckView.getLeft());
+//            LogUtils2.d("tempCheckView.width == "+tempCheckView.getMeasuredWidth());
+            
+            
+            float aa = getResources().getDisplayMetrics().xdpi;
+            int [] location  = new int[2];
+            tempCheckView.getLocationOnScreen(location);
+            int tempCheckViewLocation = location[0];
+            
+//            LogUtils2.d("tempCheckView.testLocation.X == "+testLocation[0]);
+//            LogUtils2.i("tempCheckView.testLocation.Y == "+testLocation[1]);
+//            LogUtils2.e("tempCheckView.xdpi == "+aa+"   aa * mScreenWidth = "+ aa * mScreenWidth);
+//            LogUtils2.i("tempCheckView.mScreenWidth == "+mScreenWidth);
+////            LogUtils2.d("tempCheckView.distance == "+distance);
+//            LogUtils2.d("tempCheckView.distance.X == "+location[0]);
+//            LogUtils2.d("tempCheckView.distance.Y == "+location[1]);
+//            LogUtils2.e("tempCheckView.mindistance == "+mScreenWidth / 7);
+//            LogUtils2.d("tempCheckView.maxdistance == "+mScreenWidth* 5/7);
+            
+            if(tempCheckViewLocation < mScreenWidth / 7 || tempCheckViewLocation > mScreenWidth* 5/7 ){
+            	isCanScrollBack = true;
+            	if(tab_postion < columnSelectIndex ){
+            		scrollDistance = left + width / 2 - mScreenWidth  / 7;	
+            	}else {
+					
+            		scrollDistance = left + width / 2 - mScreenWidth *5 / 7;
+				}
+            }else {
+            	isCanScrollBack = false;
             }
-            checkView.setSelected(ischeck);
-        }
-        
+
+//            LogUtils2.i("tempCheckView.scrollDistance == "+scrollDistance);
+        // 判断是否选中
+            	for (int j = 0; j < mRadioGroup_content.getChildCount(); j++) {
+            		View checkView = mRadioGroup_content.getChildAt(j);
+            		boolean ischeck;
+            		if (j == tab_postion) {
+            			ischeck = true;
+            			mSelectTextView = (TextView) checkView;
+            			
+            		} else {
+            			ischeck = false;
+            			
+            		}
+            		checkView.setSelected(ischeck);
+            		if(isClickSelect){
+                    	isClickSelect = false;
+            		checkView.setBackgroundResource(R.drawable.radio_buttong_bg);
+            		}
+            	}
+//        buttom_indicate_line.setVisibility(View.GONE);
+        columnSelectIndex = tab_postion;
         return scrollDistance;
     }
     
+    /**获取被选中的TextView 以便设置Color*/
+    public TextView getSelectTextView (TextView mTextView){
+    	
+    	TextView view = null;
+    	
+    	if(mTextView != null && mTextView.isSelected()){
+    		view = mTextView;
+    		return view;
+    	}
+    	return view;
+    }
     
     /**
      * 当栏目项发生变化时候调用
@@ -452,7 +560,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
             final TextView columnTextView = new TextView(this);
             columnTextView.setTextAppearance(context, R.style.top_category_scroll_view_item_text);
             // localTextView.setBackground(getResources().getDrawable(R.drawable.top_category_scroll_text_view_bg));
-            columnTextView.setBackgroundResource(R.drawable.radio_buttong_bg);
+//            columnTextView.setBackgroundResource(R.drawable.radio_buttong_bg);
             columnTextView.setGravity(Gravity.CENTER);
             columnTextView.setPadding(5, 5, 5, 5);
             columnTextView.setId(i);
@@ -468,17 +576,27 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
                 public void onClick(View v) {
                     for (int i = 0; i < mRadioGroup_content.getChildCount(); i++) {
                         View localView = mRadioGroup_content.getChildAt(i);
-                        if (localView != v)
+                        if (localView != v){
                             localView.setSelected(false);
-                        else {
+//                            buttom_indicate_line.setVisibility(View.GONE);
+                        }else {
                             localView.setSelected(true);
+                            LogUtils2.e("columnTextView.isClickSelect");
+                            isClickSelect = true;
+                            buttom_indicate_line.setBackgroundColor(Color.parseColor("#00000000"));
+//                            buttom_indicate_line.setBackgroundResource(R.drawable.bottom_indicate_line_color);
+//                            buttom_indicate_line.setVisibility(View.INVISIBLE);
+                            buttom_indicate_line.invalidate();
                             mViewPager.setCurrentItem(i);
+                            
                         }
                     }
                 }
             });
             
             mRadioGroup_content.addView(columnTextView, i, params);
+            
+            /**通过全局的监听器 获取item width*/
             if(!isGet_Scroll_Distance){
             	isGet_Scroll_Distance = true;
             	ViewTreeObserver vto2 = columnTextView.getViewTreeObserver(); 
@@ -488,10 +606,10 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
             			columnTextView.getViewTreeObserver().removeGlobalOnLayoutListener(this); 
 //            textView.append("\n\n"+imageView.getHeight()+","+imageView.getWidth()); 
             			int margin_distance = params.leftMargin + params.rightMargin;
-            			LogUtils2.e("margin_distance  ="+margin_distance);
+//            			LogUtils2.e("margin_distance  ="+margin_distance);
 //            			contentView.getWidth();
             			scroll_distance = item_width + margin_distance;
-            			LogUtils2.e("scroll_distance  ="+scroll_distance);
+//            			LogUtils2.e("scroll_distance  ="+scroll_distance);
             		} 
             	});
             }
@@ -535,7 +653,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         	LogUtils2.e("the newfragment = "+ newfragment.getClass().hashCode());
         } else if (channelName.equals("体育")) {
 //            newfragment = new TiYuFragment2(getApplicationContext(), new TiYuAdapter3(getApplicationContext()), "TiYuFragment", Url.TiYuId);
-        	newfragment = new TiYuFragment(tabIndex);
+        	newfragment = new TiYuFragment();
         	LogUtils2.e("the newfragment = == "+ newfragment.getClass().hashCode());
         } else if (channelName.equals("财经")) {
             newfragment = new CaiJingFragment(tabIndex);
@@ -544,11 +662,11 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         } else if (channelName.equals("电影")) {
             newfragment = new DianYingFragment(tabIndex);
         } else if (channelName.equals("汽车")) {
-            newfragment = new TestFragment();
+            newfragment = new QiCheFragment();
         } else if (channelName.equals("笑话")) {
-            newfragment = new TestFragment();
+            newfragment = new XiaoHuaFragment();
         } else if (channelName.equals("时尚")) {
-            newfragment = new TestFragment();
+            newfragment = new ShiShangFragment();
         } 
         
         else if (channelName.equals("北京")) {
@@ -558,7 +676,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         } else if (channelName.equals("房产")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("游戏")) {
-            newfragment = new TestFragment();
+            newfragment = new YouXiFragment();
         } else if (channelName.equals("情感")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("精选")) {
@@ -580,13 +698,13 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         } else if (channelName.equals("论坛")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("旅游")) {
-            newfragment = new TestFragment();
+            newfragment = new LvYouFragment();
         } else if (channelName.equals("手机")) {
-            newfragment = new TestFragment();
+            newfragment = new ShouJiFragment();
         } else if (channelName.equals("博客")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("社会")) {
-            newfragment = new TestFragment();
+            newfragment = new SheHuiFragment();
         } else if (channelName.equals("家居")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("暴雪")) {
@@ -594,7 +712,7 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
         } else if (channelName.equals("亲子")) {
             newfragment = new TestFragment();
         } else if (channelName.equals("CBA")) {
-            newfragment = new TestFragment();
+            newfragment = new CBAFragment();
         }
         return newfragment;
     }
@@ -626,9 +744,6 @@ public class MainActivityPhone extends BaseSlidingFragmentActivity{
 	public static int getCurrentFragmentIndex() {
 		return currentFragmentIndex;
 	}
-    
-    
-    
     
     
 }

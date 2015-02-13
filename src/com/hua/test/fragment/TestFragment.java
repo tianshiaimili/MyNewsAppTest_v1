@@ -1,16 +1,24 @@
 package com.hua.test.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hua.test.activity.R;
 import com.hua.test.utils.LogUtils2;
 
-public class TestFragment extends Fragment{
+public class TestFragment extends BaseFragment{
 
+	private ProgressBar progressBar;
+	private Button testButton;
+	private TextView testTextView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,17 +31,53 @@ public class TestFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		LogUtils2.i("***onCreateView***");
+		final View view = inflater.inflate(R.layout.test_fragment, null);
 		String con = "Testing...";
 		if(savedInstanceState != null){
 			Bundle mBundle = savedInstanceState;
 			 con = mBundle.getString("textContent");
 		}
-		TextView mTextView = new TextView(getActivity());
+
 		
-		mTextView.setText(con);
-		mTextView.setTextSize(50f);
+		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+		testButton = (Button) view.findViewById(R.id.test_button);
+		testButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getActivity(), "testButton", 300).show();
+			}
+		});
+		testTextView = (TextView) view.findViewById(R.id.testTextView);
+		testTextView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getActivity(), "textView", 300).show();
+			}
+		});
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				progressBar.setVisibility(View.GONE);
+//				Toast.makeText(getActivity(), "123", 3000).show();
+//				view.setFocusable(true);
+				view.setClickable(true);
+			}
+		}, 10000);
 		
-		return mTextView;
+//		view.setFocusable(false);
+//		showProgressDialog();
+//		view.setClickable(true);
+		progressBar.setFocusable(true);
+		progressBar.requestFocusFromTouch();
+		progressBar.requestFocus();
+		progressBar.setClickable(true);
+//		progressBar.
+//		view.
+//		progressBar.re
+		LogUtils2.e("--"+progressBar.isFocusable());
+//		progressBar.setVisibility(View.GONE);
+		return view;
 	}
 
 	

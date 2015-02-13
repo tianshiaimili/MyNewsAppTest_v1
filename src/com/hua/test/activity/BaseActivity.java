@@ -13,7 +13,9 @@ import com.hua.test.contants.Url;
 import com.hua.test.network.utils.HttpUtil;
 import com.hua.test.utils.ACache;
 import com.hua.test.utils.DialogUtil;
+import com.hua.test.utils.LogUtils2;
 import com.hua.test.widget.slideingactivity.IntentUtils;
+import com.umeng.analytics.MobclickAgent;
 
 public class BaseActivity extends FragmentActivity {
 	
@@ -24,6 +26,7 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 		if (mListeners.size() > 0)
 			for (BackPressHandler handler : mListeners) {
 				handler.activityOnResume();
@@ -33,6 +36,7 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 		if (mListeners.size() > 0)
 			for (BackPressHandler handler : mListeners) {
 				handler.activityOnPause();
@@ -96,9 +100,18 @@ public class BaseActivity extends FragmentActivity {
 
 	/**
 	 * 设置缓存数据（key,value）
+	 * @throws  
 	 */
-	public void setCacheStr(String key, String value) {
-		ACache.get(this).put(key, value);
+	public void setCacheStr(String key, String value){
+		try {
+			
+			ACache.get(this).put(key, value);
+			
+		} catch (Exception e) {
+			
+			LogUtils2.e("error == "+e.getMessage());
+//			throw new Exception();
+		}
 	}
 
 	/**

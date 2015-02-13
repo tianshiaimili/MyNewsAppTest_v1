@@ -60,22 +60,22 @@ OnSliderClickListener{
 	/**
 	 * 头部的横幅滑动布局
 	 */
-    protected SliderLayout mDemoSlider;
+    private SliderLayout mDemoSlider;
     /**the SwipeRefreshLayout which can pull to refresh*/
-    protected SwipeRefreshLayout swipeLayout;
+    private SwipeRefreshLayout swipeLayout;
     /*** 整个布局的listview*/
 //    @ViewById(R.id.listview)
-    protected SwipeListView mSwipeListView;
+    private SwipeListView mSwipeListView;
 //    @ViewById(R.id.progressBar)
-//    protected ProgressBar mProgressBar;
-    protected HashMap<String, String> url_maps;
+    private ProgressBar mProgressBar;
+    private HashMap<String, String> url_maps;
 
-    protected HashMap<String, NewModle> newHashMap;
+    private HashMap<String, NewModle> newHashMap;
 
 //    @Bean
-    protected NewAdapter newAdapter;
+    private NewAdapter newAdapter;
     /**数据集合 ,用于点击item时 传入的数据*/
-    protected List<NewModle>  listsModles = new ArrayList<NewModle>();
+    private List<NewModle>  listsModles = new ArrayList<NewModle>();
     private int index = 0;
     private boolean isRefresh = false;
     /**全局的View*/
@@ -144,14 +144,14 @@ OnSliderClickListener{
     }
 
 	public void initContentView(View tempContentView){
-		LogUtils2.i("the tabIndex = "+mTabIndex);
-		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
-		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
-			showProgressDialog();
-		}
+//		LogUtils2.i("the tabIndex = "+mTabIndex);
+//		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
+//		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
+//			showProgressDialog();
+//		}
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
-//		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
+		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
 		
 //    	LogUtils2.e("*******initView*************");
     	LogUtils2.e("*******index*************== "+index);
@@ -335,8 +335,8 @@ OnSliderClickListener{
             loadNewList(url);
         } else {
             mSwipeListView.onBottomComplete();
-//            mProgressBar.setVisibility(View.GONE);
-            dismissProgressDialog();
+            mProgressBar.setVisibility(View.GONE);
+//            dismissProgressDialog();
             getMyActivity().showShortToast(getString(R.string.not_network));
             LogUtils2.i("cacheFragmentName = "+cacheFragmentName);
             String result = getMyActivity().getCacheStr(cacheFragmentName + currentPagte);
@@ -365,13 +365,13 @@ OnSliderClickListener{
 	private class GetDataTask extends AsyncTask<String, Void, String> {
 		
 		@Override
-		protected void onPreExecute() {
+		public void onPreExecute() {
 			super.onPreExecute();
 //			LogUtils2.e("GetDataTask onPreExecute ----");
 		}
 		// 后台处理部分
 		@Override
-		protected String doInBackground(String... params) {
+		public String doInBackground(String... params) {
 			String result = null;
 			try {
 				result = HttpUtil.getByHttpClient(mContext, params[0]);
@@ -387,7 +387,7 @@ OnSliderClickListener{
 		// 这里是对刷新的响应，可以利用addFirst（）和addLast()函数将新加的内容加到LISTView中
 		// 根据AsyncTask的原理，onPostExecute里的result的值就是doInBackground()的返回值
 		@Override
-		protected void onPostExecute(String result) {
+		public void onPostExecute(String result) {
 			// 在头部增加新添内容
 			// Toast.makeText(getActivity(), "lal", 300).show();
 			super.onPostExecute(result);// 这句是必有的，AsyncTask规定的格式
@@ -407,18 +407,20 @@ OnSliderClickListener{
 //    @UiThread
     public void getResult(String result) {
     	if(result != null){
-    		
+    		LogUtils2.e("getMyActivity = "+getMyActivity());
     		getMyActivity().setCacheStr("HeadNewsFragment" + currentPagte, result);
     		if (isRefresh) {
     			isRefresh = false;
     			newAdapter.clear();
     			listsModles.clear();
     		}
-//    		mProgressBar.setVisibility(View.GONE);
     		swipeLayout.setRefreshing(false);
     		List<NewModle> list =
     				NewListJson.instance(getActivity()).readJsonNewModles(result,
     						Url.TopId);
+
+    		mProgressBar.setVisibility(View.GONE);
+    		
     		if (index == 0) {
     			LogUtils2.i("is first come in************");
     			initSliderLayout(list);
@@ -427,7 +429,7 @@ OnSliderClickListener{
     			newAdapter.appendList(list,index);
     		}
     		
-    		dismissProgressDialog();
+//    		dismissProgressDialog();
     		
     		if(newAdapter.isNeedUplistsModlesData(index)){
     			listsModles.addAll(list);
@@ -628,10 +630,17 @@ OnSliderClickListener{
 				long id) {
 //			LogUtils2.e("in the onItemClick the position = "+position);
 //			Toast.makeText(mContext, "  pos== "+position, 300).show();
+			
+			if(mProgressBar.getVisibility() == View.VISIBLE){
+				return;
+			}
+			
 			   NewModle newModle = listsModles.get(position - 1);
 		        enterDetailActivity(newModle);
 			
 		}
 		
 	}
+	
+	
 }

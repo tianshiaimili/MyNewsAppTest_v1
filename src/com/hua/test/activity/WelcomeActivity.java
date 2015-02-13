@@ -1,5 +1,8 @@
 package com.hua.test.activity;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.offers.OffersManager;
+import net.youmi.android.spot.SpotManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +14,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import com.hua.test.utils.LogUtils2;
+import com.igexin.sdk.PushManager;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.Animator.AnimatorListener;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -125,6 +129,16 @@ public class WelcomeActivity extends BaseActivity {
 		welcomeTextView = (TextView) findViewById(R.id.welcome_text);
 //		animation1 = AnimationUtils.loadAnimation(getBaseContext(), R.animator.shake);
 		
+		initYouMI();
+		/**预加载插屏广告数据*/
+		SpotManager.getInstance(this).loadSpotAds();
+		SpotManager.getInstance(this).setSpotOrientation(
+	            SpotManager.ORIENTATION_PORTRAIT);
+		
+		
+		///初始化 个推
+		PushManager.getInstance().initialize(this.getApplicationContext());
+		
 		new Thread(){
 			
 			public void run() {
@@ -144,6 +158,10 @@ public class WelcomeActivity extends BaseActivity {
 		}.start();
 	}
 	
-	
+	   /**初始化 有米广告*/
+    private void initYouMI() {
+		AdManager.getInstance(getApplicationContext()).init("217849af92c2b80f", "31eced554a9c8e43", false);
+		OffersManager.getInstance(getApplicationContext());
+	}
 	
 }

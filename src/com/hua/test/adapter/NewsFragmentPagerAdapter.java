@@ -1,6 +1,7 @@
 
 package com.hua.test.adapter;
 
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -8,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+
+import com.hua.test.utils.LogUtils2;
 
 /**
  * HomePage news adapter
@@ -73,5 +76,38 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
         Object obj = super.instantiateItem(container, position);
         return obj;
     }
+
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		super.destroyItem(container, position, object);
+		LogUtils2.e("NewsFragmentPagerAdapter.position = "+position);
+		LogUtils2.i("NewsFragmentPagerAdapter.object = "+object);
+	}
+
+	@Override
+	public void startUpdate(ViewGroup viewgroup) {
+		super.startUpdate(viewgroup);
+//		LogUtils2.e("NewsFragmentPagerAdapter.startUpdate = ");
+	}
+
+	@Override
+	public void finishUpdate(ViewGroup container) {
+		super.finishUpdate(container);
+//		LogUtils2.e("NewsFragmentPagerAdapter.finishUpdate = ");
+	}
+
+	@Override
+	public Parcelable saveState() {
+		LogUtils2.e("NewsFragmentPagerAdapter.saveState = ");
+		return super.saveState();
+	}
+
+	@Override
+	public void restoreState(Parcelable parcelable, ClassLoader classloader) {
+		LogUtils2.e("NewsFragmentPagerAdapter.restoreState = ");
+		super.restoreState(parcelable, classloader);
+	}
+    
+    
 
 }

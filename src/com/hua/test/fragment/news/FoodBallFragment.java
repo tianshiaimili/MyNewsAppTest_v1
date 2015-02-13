@@ -61,7 +61,7 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
     /*** 整个布局的listview*/
     protected SwipeListView mSwipeListView;
 //    @ViewById(R.id.progressBar)
-//    protected ProgressBar mProgressBar;
+    protected ProgressBar mProgressBar;
     /**作为head bar部分 的图片的跳转对应连接的url集合*/
     protected HashMap<String, String> url_maps;
     /**作为head bar部分的图片的url集合*/
@@ -129,16 +129,16 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 
 	public void initContentView(View tempContentView){
 //		showProgressDialog();
-		
-		LogUtils2.i("the tabIndex = "+mTabIndex);
-		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
-		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
-			showProgressDialog();
-		}
+//		
+//		LogUtils2.i("the tabIndex = "+mTabIndex);
+//		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
+//		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
+//			showProgressDialog();
+//		}
 		
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
-//		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
+		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
 		
 //    	LogUtils2.e("*******initView*************");
     	LogUtils2.e("*******index*************== "+index);
@@ -214,8 +214,8 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
             loadNewList(url);
         } else {
             mSwipeListView.onBottomComplete();
-//            mProgressBar.setVisibility(View.GONE);
-            dismissProgressDialog();
+            mProgressBar.setVisibility(View.GONE);
+//            dismissProgressDialog();
             getMyActivity().showShortToast(getString(R.string.not_network));
             String result = getMyActivity().getCacheStr(cacheFragmentName + currentPagte);
             if (!StringUtils.isEmpty(result)) {
@@ -275,17 +275,20 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 //	    @UiThread
 	    public void getResult(String result) {
 	    	if(result != null){
-	    		
+	    		try {
+					
+				
 	    		getMyActivity().setCacheStr(cacheName + currentPagte, result);
+	    		
 	    		if (isRefresh) {
 	    			isRefresh = false;
 	    			foodBallAdapter.clear();
 	    			listsModles.clear();
 	    		}
-//	    		mProgressBar.setVisibility(View.GONE);
 	    		swipeLayout.setRefreshing(false);
 	    		List<NewModle> list = NewListJson.instance(getActivity()).readJsonNewModles(result,
 	    				Url.FootId);
+	    		mProgressBar.setVisibility(View.GONE);
 	    		if (index == 0) {
 	    			LogUtils2.i("is first come in************");
 	    			initSliderLayout(list);
@@ -294,12 +297,18 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 	    			foodBallAdapter.appendList(list,index);
 	    		}
 	    		
-	    		dismissProgressDialog();
+//	    		dismissProgressDialog();
 	    		
 	    		if(foodBallAdapter.isNeedUplistsModlesData(index)){
 	    			listsModles.addAll(list);
 	    		}
 	    		mSwipeListView.onBottomComplete();
+	    		
+	    		} catch (Exception e) {
+	    			
+	    			LogUtils2.e("error == "+ e.getMessage());
+//	    			new  Exception();
+	    		}
 	    	}
 	    }
 		
@@ -461,6 +470,10 @@ public class FoodBallFragment extends BaseFragment implements SwipeRefreshLayout
 				long id) {
 //			LogUtils2.e("in the onItemClick the position = "+position);
 //			Toast.makeText(mContext, "  pos== "+position, 300).show();
+			if(mProgressBar.getVisibility() == View.VISIBLE){
+				return;
+			}
+			
 			   NewModle newModle = listsModles.get(position - 1);
 		        enterDetailActivity(newModle);
 			

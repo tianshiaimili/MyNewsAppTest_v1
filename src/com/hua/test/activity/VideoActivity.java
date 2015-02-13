@@ -281,7 +281,7 @@ public class VideoActivity extends SwipeBackActivity {
 			columnTextView.setTextAppearance(getApplicationContext(),
 					R.style.top_category_scroll_view_item_text);
 			// localTextView.setBackground(getResources().getDrawable(R.drawable.top_category_scroll_text_view_bg));
-			columnTextView.setBackgroundResource(R.drawable.radio_buttong_bg);
+//			columnTextView.setBackgroundResource(R.drawable.radio_buttong_bg);
 			columnTextView.setGravity(Gravity.CENTER);
 			// columnTextView.setPadding(5, 5, 5, 5);
 			columnTextView.setId(i);

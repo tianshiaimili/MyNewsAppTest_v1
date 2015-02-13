@@ -51,7 +51,7 @@ SwipeRefreshLayout.OnRefreshListener{
 //    @ViewById(R.id.listview)
     protected SwipeListView mSwipeListView;
 //    @ViewById(R.id.progressBar)
-//    protected ProgressBar mProgressBar;
+    protected ProgressBar mProgressBar;
 
 //    public int index = 1;
     /**标记获取了的页数下标*/
@@ -62,6 +62,7 @@ SwipeRefreshLayout.OnRefreshListener{
     private boolean isRefresh = false;
     private static final int RESPONSE_OK = 0;
     private String cacheName ="PictureSinaMeiTuFragment";
+    private boolean isCanClick;
 
 	//当前fragment 在viewpage中的第几个页面下的index
 	private int mTabIndex;
@@ -105,11 +106,12 @@ SwipeRefreshLayout.OnRefreshListener{
     			mPicuterAdapter.clear();
     			listsModles.clear();
     		}
-//    		mProgressBar.setVisibility(View.GONE);
-    		dismissProgressDialog();
+//    		dismissProgressDialog();
     		swipeLayout.setRefreshing(false);
     		List<PicuterModle> list = PicuterSinaJson.instance(getActivity()).readJsonPhotoListModles(
     				result);
+
+    		mProgressBar.setVisibility(View.GONE);
     		mPicuterAdapter.appendList(list,index);
     		
     		if(mPicuterAdapter.isNeedUplistsModlesData(index)){
@@ -185,8 +187,8 @@ SwipeRefreshLayout.OnRefreshListener{
             loadNewList(url);
         } else {
             mSwipeListView.onBottomComplete();
-//            mProgressBar.setVisibility(View.GONE);
-            dismissProgressDialog();
+            mProgressBar.setVisibility(View.GONE);
+//            dismissProgressDialog();
             getMyActivity().showShortToast(getString(R.string.not_network));
             String result = getMyActivity().getCacheStr(cacheFragmentName + currentPagte);
             if (!StringUtils.isEmpty(result)) {
@@ -218,14 +220,14 @@ SwipeRefreshLayout.OnRefreshListener{
 	public void initContentView(View tempContentView){
 		
 //		showProgressDialog();
-		if(mTabIndex == PictureSinaActivity.getCurrentFragmentIndex()){
-			showProgressDialog();
-		}
+//		if(mTabIndex == PictureSinaActivity.getCurrentFragmentIndex()){
+//			showProgressDialog();
+//		}
 		
 		swipeLayout = (SwipeRefreshLayout) tempContentView.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(this);
 		mSwipeListView = (SwipeListView) tempContentView.findViewById(R.id.listview);
-//		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
+		mProgressBar = (ProgressBar) tempContentView.findViewById(R.id.progressBar);
 //		mProgressBar.setVisibility(View.GONE);
         InitView.instance().initSwipeRefreshLayout(swipeLayout);
         InitView.instance().initListView(mSwipeListView, getActivity());
@@ -326,6 +328,10 @@ SwipeRefreshLayout.OnRefreshListener{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			if(mProgressBar.getVisibility() == View.VISIBLE){
+				return;
+			}
+			
 	        PicuterModle photoModle = listsModles.get(position);
 	        Bundle bundle = new Bundle();
 	        bundle.putString("pic_id", photoModle.getId());

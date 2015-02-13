@@ -564,10 +564,13 @@ public class ACache {
 	 * @version 1.0
 	 */
 	public class ACacheManager {
+		/**缓存大小*/
 		private final AtomicLong cacheSize;
+		/**缓存总量*/
 		private final AtomicInteger cacheCount;
 		private final long sizeLimit;
 		private final int countLimit;
+		/**文件最后修改的时间*/
 		private final Map<File, Long> lastUsageDates = Collections
 				.synchronizedMap(new HashMap<File, Long>());
 		protected File cacheDir;
@@ -605,6 +608,7 @@ public class ACache {
 			}).start();
 		}
 
+		/**存放数据...*/
 		private void put(File file) {
 			int curCacheCount = cacheCount.get();
 			while (curCacheCount + 1 > countLimit) {
@@ -692,6 +696,7 @@ public class ACache {
 			return fileSize;
 		}
 
+		/**计算文件大小*/
 		private long calculateSize(File file) {
 			return file.length();
 		}
@@ -699,7 +704,6 @@ public class ACache {
 
 	/**
 	 * @title 时间计算工具�?
-	 * @author 杨福海（michael�?www.yangfuhai.com
 	 * @version 1.0
 	 */
 	private static class Utils {

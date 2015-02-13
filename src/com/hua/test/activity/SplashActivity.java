@@ -1,5 +1,7 @@
 package com.hua.test.activity;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.offers.OffersManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -53,8 +55,10 @@ public class SplashActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		preferences = getPreferences(MODE_PRIVATE);
 		isfirstInstall = preferences.getBoolean("isfirstInstall", false);
+		initYouMI();
 		if (!isfirstInstall) {
 			LogUtils2.d("***********************");
 			setContentView(R.layout.first_install_page);
@@ -69,7 +73,8 @@ public class SplashActivity extends BaseActivity {
 		} else {
 
 			LogUtils2.d("+++++++++++++");
-			Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+//			Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+			Intent intent = new Intent(getBaseContext(), WelcomeActivity2.class);
 			// Intent intent = new Intent(getBaseContext(),
 			// WelcomeActivity.class);
 			startActivity(intent);
@@ -78,6 +83,13 @@ public class SplashActivity extends BaseActivity {
 		}
 	}
 
+	   /**初始化 有米广告*/
+    private void initYouMI() {
+		AdManager.getInstance(getApplicationContext()).init("217849af92c2b80f", "31eced554a9c8e43", false);
+		OffersManager.getInstance(getApplicationContext());
+	}
+	
+	
 	class MViewPagerAdapter extends PagerAdapter {
 
 		@Override

@@ -1,7 +1,6 @@
 package com.hua.test.fragment.news;
 
 import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +18,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
 
@@ -34,7 +33,6 @@ import com.hua.test.adapter.news.YuLeAdapter;
 import com.hua.test.bean.NewModle;
 import com.hua.test.contants.Url;
 import com.hua.test.fragment.BaseFragment;
-import com.hua.test.fragment.news.FoodBallFragment.MyFoodBallListViewItemListener;
 import com.hua.test.initView.InitView;
 import com.hua.test.network.http.json.NewListJson;
 import com.hua.test.network.utils.HttpUtil;
@@ -62,7 +60,7 @@ public class YuLeFragment extends BaseFragment implements
 	/*** 整个布局的listview */
 	protected SwipeListView mSwipeListView;
 	// @ViewById(R.id.progressBar)
-	// protected ProgressBar mProgressBar;
+	 protected ProgressBar mProgressBar;
 	/** 作为head bar部分 的图片的跳转对应连接的url集合 */
 	protected HashMap<String, String> url_maps;
 	/** 作为head bar部分的图片的url集合 */
@@ -71,6 +69,8 @@ public class YuLeFragment extends BaseFragment implements
 	/** 数据集合 ,用于点击item时 传入的数据 */
 //	protected List<NewModle> listsModles = new ArrayList<NewModle>();
 	protected List< NewModle> listsModles = new ArrayList< NewModle>();
+//	protected List< SoftReference<NewModle>> listsModles = new ArrayList< SoftReference<NewModle>>();
+	 
 	
 	/** 全局的View */
 	private View contentView;
@@ -126,18 +126,18 @@ public class YuLeFragment extends BaseFragment implements
 	public void initContentView(View tempContentView) {
 //		showProgressDialog();
 		
-		LogUtils2.i("the tabIndex = "+mTabIndex);
-		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
-		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
-			showProgressDialog();
-		}
+//		LogUtils2.i("the tabIndex = "+mTabIndex);
+//		LogUtils2.d("the MainActivityPhone tabIndex = "+MainActivityPhone.getCurrentFragmentIndex());
+//		if(mTabIndex == MainActivityPhone.getCurrentFragmentIndex()){
+//			showProgressDialog();
+//		}
 		
 		swipeLayout = (SwipeRefreshLayout) tempContentView
 				.findViewById(R.id.swipe_container);
 		mSwipeListView = (SwipeListView) tempContentView
 				.findViewById(R.id.listview);
-		// mProgressBar = (ProgressBar)
-		// tempContentView.findViewById(R.id.progressBar);
+		 mProgressBar = (ProgressBar)
+		 tempContentView.findViewById(R.id.progressBar);
 
 		// LogUtils2.e("*******initView*************");
 		LogUtils2.e("*******index*************== " + index);
@@ -201,8 +201,8 @@ public class YuLeFragment extends BaseFragment implements
 			loadNewList(url);
 		} else {
 			mSwipeListView.onBottomComplete();
-			dismissProgressDialog();
-			// mProgressBar.setVisibility(View.GONE);
+//			dismissProgressDialog();
+			 mProgressBar.setVisibility(View.GONE);
 			getMyActivity().showShortToast(getString(R.string.not_network));
 			String result = getMyActivity().getCacheStr(
 					cacheFragmentName + currentPagte);
@@ -263,16 +263,14 @@ public class YuLeFragment extends BaseFragment implements
 	public void getResult(String result) {
 		if (result != null) {
 
+			LogUtils2.e("getMyActivity = "+getMyActivity());
 			getMyActivity().setCacheStr(cacheName + currentPagte, result);
 			if (isRefresh) {
 				isRefresh = false;
 				yuLeAdapter.clear();
 				listsModles.clear();
 			}
-			// mProgressBar.setVisibility(View.GONE);
 			swipeLayout.setRefreshing(false);
-//			List<SoftReference<NewModle>> list = NewListJson.instance(getActivity())
-//					.readJsonNewModles2(result, Url.YuLeId);
 			
 			List<NewModle> list = NewListJson.instance(getActivity())
 					.readJsonNewModles(result, Url.YuLeId);
@@ -286,7 +284,8 @@ public class YuLeFragment extends BaseFragment implements
 				yuLeAdapter.appendList(list, index);
 			}
 
-			dismissProgressDialog();
+			mProgressBar.setVisibility(View.GONE);
+//			dismissProgressDialog();
 
 			if (yuLeAdapter.isNeedUplistsModlesData(index)) {
 				listsModles.addAll(list);
@@ -374,6 +373,10 @@ public class YuLeFragment extends BaseFragment implements
 				long id) {
 			// LogUtils2.e("in the onItemClick the position = "+position);
 			// Toast.makeText(mContext, "  pos== "+position, 300).show();
+			if(mProgressBar.getVisibility() == View.VISIBLE){
+				return;
+			}
+			
 			NewModle newModle = listsModles.get(position - 1);
 			enterDetailActivity(newModle);
 		}

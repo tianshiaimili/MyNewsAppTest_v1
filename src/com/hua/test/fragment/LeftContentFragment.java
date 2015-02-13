@@ -1,5 +1,6 @@
 package com.hua.test.fragment;
 
+import net.youmi.android.offers.OffersManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -108,7 +109,10 @@ public class LeftContentFragment extends Fragment implements OnClickListener {
 
 	// @Click(R.id.more)
 	public void enterMore(View view) {
-		context.startActivity(new Intent(context, WelcomeActivity.class));
+//		context.startActivity(new Intent(context, WelcomeActivity.class));
+		
+		OffersManager.getInstance(mainActivityPhone).showOffersWall();
+		LogUtils2.e("********enterMore*********");
 		isShow();
 	}
 //
@@ -142,7 +146,7 @@ public class LeftContentFragment extends Fragment implements OnClickListener {
 			break;
 
 		case R.id.more:
-//			enterMore(view);
+			enterMore(view);
 			break;
 
 		default:
