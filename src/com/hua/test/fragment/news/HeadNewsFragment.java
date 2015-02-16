@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.http.Header;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +39,8 @@ import com.hua.test.bean.NewModle;
 import com.hua.test.contants.Url;
 import com.hua.test.fragment.BaseFragment;
 import com.hua.test.initView.InitView;
+import com.hua.test.network.http.json.HttpGetJsonUtil;
+import com.hua.test.network.http.json.JacksonJsonUtil;
 import com.hua.test.network.http.json.NewListJson;
 import com.hua.test.network.utils.HttpUtil;
 import com.hua.test.utils.LogUtils2;
@@ -48,6 +52,7 @@ import com.hua.test.widget.viewimage.Animations.SliderLayout;
 import com.hua.test.widget.viewimage.SliderTypes.BaseSliderView;
 import com.hua.test.widget.viewimage.SliderTypes.BaseSliderView.OnSliderClickListener;
 import com.hua.test.widget.viewimage.SliderTypes.TextSliderView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 /**
  * 今日头条的fragment
@@ -353,7 +358,28 @@ OnSliderClickListener{
         String result;
         try {
 //            result = HttpUtil.getByHttpClient(getActivity(), url);
-            new GetDataTask().execute(url);
+        	
+//            new GetDataTask().execute(url);
+        	
+        	HttpGetJsonUtil.get(url, new AsyncHttpResponseHandler() { 
+        		
+				
+				@Override
+				public void onSuccess(int statueCode, Header[] arg1, byte[] result) {
+					LogUtils2.e("___________result________________= "+result);
+					Message msg = new Message();
+					msg.obj = new String(result);
+					msg.what = RESPONSE_OK;
+					mHandler.sendMessage(msg);
+					
+				}
+				
+				@Override
+				public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+					LogUtils2.e("___________error_________________");
+				}
+			});
+        	
 //            getResult(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -415,10 +441,16 @@ OnSliderClickListener{
     			listsModles.clear();
     		}
     		swipeLayout.setRefreshing(false);
-    		List<NewModle> list =
-    				NewListJson.instance(getActivity()).readJsonNewModles(result,
-    						Url.TopId);
+    		
+    		//这是JsonObject来解析json数据
+//    		List<NewModle> list =
+//    				NewListJson.instance(getActivity()).readJsonNewModles(result,
+//    						Url.TopId);
 
+    		//这是用jackSon 来解析数据 这个更加快捷 但是 有点麻烦
+    		List<NewModle> list =JacksonJsonUtil.readJson2NewModles(result, Url.TopId);
+    		/////
+    		
     		mProgressBar.setVisibility(View.GONE);
     		
     		if (index == 0) {

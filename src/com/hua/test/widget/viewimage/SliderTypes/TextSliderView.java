@@ -11,6 +11,7 @@ import com.hua.test.activity.R;
 
 /**
  * This is a slider with a description TextView.
+ * 在bar横幅条下面 显示图片内容说明的 textView
  */
 public class TextSliderView extends BaseSliderView {
     public TextSliderView(Context context) {
