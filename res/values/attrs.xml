@@ -38,9 +38,8 @@
         <attr name="activeRadius" format="dimension" />
     </declare-styleable>
 
-    
     <!-- SwipeListView的属性设置 -->
-   <declare-styleable name="SwipeListView">
+    <declare-styleable name="SwipeListView">
         <attr name="swipeOpenOnLongPress" format="boolean" />
         <attr name="swipeAnimationTime" format="integer" />
         <attr name="swipeOffsetLeft" format="dimension" />
@@ -70,8 +69,9 @@
         <attr name="swipeIsOnBottomStyle" format="boolean" />
         <attr name="swipeIsAutoLoadOnBottom" format="boolean" />
     </declare-styleable>
-        <!-- swipe listview -->
-   <!--  <declare-styleable name="SwipeListView">
+    <!-- swipe listview -->
+    <!--
+    <declare-styleable name="SwipeListView">
         <attr name="swipeOpenOnLongPress" format="boolean" />
         <attr name="swipeAnimationTime" format="integer" />
         <attr name="swipeOffsetLeft" format="dimension" />
@@ -94,10 +94,8 @@
             <enum name="dismiss" value="1" />
         </attr>
     </declare-styleable>
-     -->
-    
-    
-    
+    -->
+
     <declare-styleable name="PagerIndicator">
 
         <!-- indicator visibility -->
@@ -237,10 +235,9 @@
         <attr name="shadow_bottom" format="reference" />
     </declare-styleable>
 
-        <!-- 单独给switch定义一个style，就不用在布局中每次都指定style -->
+    <!-- 单独给switch定义一个style，就不用在布局中每次都指定style -->
     <attr name="switchStyle" format="reference" />
-    
-    
+
     <!-- switch图片和字符串风格声明 -->
     <declare-styleable name="Switch">
 
@@ -261,9 +258,10 @@
         <!-- Minimum space between the switch and caption text -->
         <attr name="switchPadding" format="dimension" />
     </declare-styleable>
-    
-        <!-- switch单独文本风格声明，可以不用在style中实现，使用默认即可 -->
+
+    <!-- switch单独文本风格声明，可以不用在style中实现，使用默认即可 -->
     <declare-styleable name="SwitchTextAppearance">
+
         <!-- Text color. -->
         <attr name="android:textColor" />
         <!-- Size of the text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp). -->
@@ -279,8 +277,8 @@
         <!-- Color of the links. -->
         <attr name="android:textColorLink" />
     </declare-styleable>
-    
-        <!-- SlidingMenu -->
+
+    <!-- SlidingMenu -->
     <declare-styleable name="SlidingMenu">
         <attr name="mode">
             <enum name="left" value="0" />
@@ -307,4 +305,11 @@
         <attr name="selectorDrawable" format="reference" />
     </declare-styleable>
     
+    <declare-styleable name="ViewPager">
+        <attr name="viewPage_orientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>
