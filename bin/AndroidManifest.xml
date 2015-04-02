@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hua.test.activity"
-    android:versionCode="1"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,7 +26,7 @@
     <!-- 个推自定义的权限 -->
     <uses-permission android:name="getui.permission.GetuiService" />
 
-    <!-- 自定义权限 -->
+    <!-- 自定义权限 -->d
     <permission
         android:name="getui.permission.GetuiService"
         android:protectionLevel="normal" >

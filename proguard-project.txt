@@ -18,3 +18,124 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontpreverify
+-repackageclasses ''
+-allowaccessmodification
+-optimizations !code/simplification/arithmetic
+-useuniqueclassmembernames  
+ -optimizationpasses 5  
+-dontusemixedcaseclassnames  
+-dontskipnonpubliclibraryclasses  
+-verbose  
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+ 
+-keepattributes *Annotation*
+
+
+-libraryjars   libs/android-support-v4.jar
+-dontwarn android.support.v4.** 
+-keep class android.support.v4.**
+
+-libraryjars   libs/jackson-all-1.7.6.jar
+-dontwarn org.codehaus.jackson.**
+-keep class org.codehaus.jackson.**
+
+
+-libraryjars   libs/umeng-analytics-v5.2.3.jar
+-dontwarn com.umeng.analytics.** 
+-keep class com.umeng.analytics.** 
+
+-libraryjars   libs/umeng-fb-v4.3.2.jar
+-dontwarn com.umeng.fb.** 
+-keep class com.umeng.fb.** 
+
+-libraryjars   libs/umeng-update-v2.4.2.jar
+-dontwarn com.umeng.update.** 
+-keep class com.umeng.update.**
+
+-libraryjars   libs/YoumiSdk_v5.00_2015-01-08.jar
+-dontwarn net.youmi.android.** 
+-keep class net.youmi.android.**
+
+-libraryjars   libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar
+-dontwarn com.nostra13.universalimageloader.** 
+-keep class com.nostra13.universalimageloader.**
+
+-libraryjars   libs/picasso-2.3.1.jar
+-dontwarn com.squareup.picasso.** 
+-keep class com.squareup.picasso.**
+
+-libraryjars   libs/GetuiSdk2.4.1.0.jar
+-dontwarn com.igexin.** 
+-keep class com.igexin.**
+
+-libraryjars   libs/com.haarman.listviewanimations-2.6.0.jar
+-dontwarn com.haarman.listviewanimations.** 
+-keep class com.haarman.listviewanimations.**
+
+-libraryjars   libs/jsoup-1.7.2.jar
+-dontwarn org.jsoup.** 
+-keep class org.jsoup.** 
+
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.widget.BaseAdapter {*;}
+-keep public class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+    public void set*(...);
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keepclassmembers class * implements android.os.Parcelable {
+    static android.os.Parcelable$Creator CREATOR;
+}
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+
+
+-keep
+class io.vov.vitamio.**
+ {*;}
+-keep
+class com.actionbarsherlock.**
+ {*;}
+
+
+-assumenosideeffects
+class com.hua.test.utils.LogUtils2
+ {
+    public static ***
+ e(...);
+    public static ***
+ w(...);
+    public static ***
+ wtf(...);
+    public static ***
+ d(...);
+    public static ***
+ v(...);
+}
+
+
+#----------------------
+-keepclassmembers class * extends android.webkit.WebViewClient {
+     public void *(android.webkit.WebView,java.lang.String,android.graphics.Bitmap);
+     public boolean *(android.webkit.WebView,java.lang.String);
+}
+
+-keepclassmembers class * extends android.webkit.WebChromeClient {
+     public void *(android.webkit.WebView,java.lang.String);
+}
